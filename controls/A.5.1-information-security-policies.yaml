@@ -1,0 +1,56 @@
+apiVersion: concord.dev/v1
+kind: Control
+
+metadata:
+  id: ISO27001-A.5.1-information-security-policies
+  name: information-security-policies-approved
+  title: Information security policies approved by management and reviewed annually
+  framework: iso27001
+  category: Organisational Controls
+  severity: high
+  tags:
+    - iso27001
+    - governance
+  owners:
+    - team: legal
+
+spec:
+  description: |
+    ISO/IEC 27001:2022 A.5.1 requires policies for information security to
+    be defined, approved by management, published, communicated, and
+    reviewed at planned intervals or when significant changes occur.
+    Concord verifies a cosigned policy-attestation exists with the four
+    required fields: approval_date, approving_authority, last_reviewed_at,
+    next_review_due.
+
+  rationale: |
+    A.5.1 is the foundation control auditors anchor every other A.5..A.18
+    finding to. A stale or unreviewed policy is the first thing flagged
+    during stage-1 ISO 27001 audits.
+
+  evidence:
+    - id: attestation
+      source: attestation
+      type: policy_attestation
+      fixture: ../tests/fixtures/A.5.1-pass.json
+      params:
+        kind: information_security_policy
+
+  policy:
+    engine: rego
+    package: concord.iso27001.a_5_1
+    file: ../policies/a_5_1.rego
+
+  remediation:
+    runbook: docs/remediation/iso27001-A.5.1.md
+    auto_fix: false
+    estimated_effort: 2d
+
+  mappings:
+    iso27001:
+      - "A.5.1"
+    nist_csf:
+      - "GV.PO-01"
+
+  status: stable
+  blocking: true

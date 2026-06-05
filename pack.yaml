@@ -1,0 +1,17 @@
+apiVersion: concord.dev/v1
+kind: ControlPack
+metadata:
+  id: iso27001
+  name: iso27001
+  version: v0.1.0
+  framework_label: ISO/IEC 27001:2022
+  attribution:
+    sources:
+      - prowler
+      - steampipe-powerpipe
+spec:
+  controls:
+    - ISO27001-A.5.1-information-security-policies
+  evidence_sources:
+    - source: attestation
+      version: ">=v0.1.0,<v1.0.0"
