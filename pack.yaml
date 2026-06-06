@@ -3,15 +3,43 @@ kind: ControlPack
 metadata:
   id: iso27001
   name: iso27001
-  version: v0.1.0
+  version: v0.2.0
   framework_label: ISO/IEC 27001:2022
   attribution:
     sources:
       - prowler
       - steampipe-powerpipe
+      - aws-audit-manager
+      - oscal-content
 spec:
   controls:
     - ISO27001-A.5.1-information-security-policies
+    - ISO27001-A.5.7-threat-intelligence
+    - ISO27001-A.5.15-access-control-policy
+    - ISO27001-A.5.16-identity-management
+    - ISO27001-A.5.17-authentication-information
+    - ISO27001-A.5.18-access-rights
+    - ISO27001-A.5.19-supplier-relationships
+    - ISO27001-A.5.23-cloud-services-security
+    - ISO27001-A.5.30-business-continuity
+    - ISO27001-A.5.33-records-protection
+    - ISO27001-A.5.37-documented-procedures
+    - ISO27001-A.6.3-awareness-training
+    - ISO27001-A.8.2-privileged-access
+    - ISO27001-A.8.5-secure-authentication
+    - ISO27001-A.8.7-malware-protection
+    - ISO27001-A.8.8-vulnerability-management
+    - ISO27001-A.8.13-information-backup
+    - ISO27001-A.8.15-logging
+    - ISO27001-A.8.16-monitoring-activities
+    - ISO27001-A.8.20-network-security
+    - ISO27001-A.8.24-cryptography
   evidence_sources:
     - source: attestation
+      version: ">=v0.1.0,<v1.0.0"
+    - source: aws
+      version: ">=v0.1.0,<v1.0.0"
+    - source: okta
+      version: ">=v0.1.0,<v1.0.0"
+    - source: github
       version: ">=v0.1.0,<v1.0.0"

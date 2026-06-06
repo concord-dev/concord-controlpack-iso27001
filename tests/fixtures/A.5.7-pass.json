@@ -1,0 +1,9 @@
+{
+  "fetched_at": "2026-06-06T10:00:00Z",
+  "regions_with_workloads": ["us-east-1", "eu-west-1"],
+  "detectors": [
+    {"id": "det-east", "region": "us-east-1", "status": "ENABLED"},
+    {"id": "det-eu", "region": "eu-west-1", "status": "ENABLED"}
+  ],
+  "high_severity_findings": []
+}

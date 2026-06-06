@@ -1,0 +1,44 @@
+apiVersion: concord.dev/v1
+kind: Control
+metadata:
+  id: ISO27001-A.5.33-records-protection
+  name: records-cloudtrail-integrity
+  title: Audit logs (CloudTrail) carry cryptographic log-file validation
+  framework: iso27001
+  category: Organisational Controls
+  severity: high
+  tags: [iso27001, records, audit]
+  owners:
+    - team: security
+spec:
+  description: |
+    ISO/IEC 27001:2022 A.5.33 requires records to be protected from
+    loss, destruction, and falsification. For AWS audit logs, the
+    operational form is CloudTrail log-file validation (every log
+    digest is signed by AWS).
+  rationale: |
+    Without log-file validation, log tampering by an attacker (or by
+    accident) is undetectable. A.5.33 specifically calls out
+    "falsification" as an in-scope threat.
+  evidence:
+    - id: cloudtrail
+      source: aws
+      type: cloudtrail_trails
+      fixture: ../tests/fixtures/A.5.33-pass.json
+      params:
+        region: ${env.AWS_REGION}
+  policy:
+    engine: rego
+    package: concord.iso27001.a_5_33
+    file: ../policies/a_5_33.rego
+  remediation:
+    runbook: docs/remediation/iso27001-A.5.33.md
+    auto_fix: true
+    estimated_effort: 30m
+  mappings:
+    iso27001: ["A.5.33"]
+    soc2: ["CC7.2"]
+    nist_csf: ["PR.DS-01"]
+    nist_800_53: ["AU-9", "AU-10"]
+  status: stable
+  blocking: true

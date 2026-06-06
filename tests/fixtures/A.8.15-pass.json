@@ -1,0 +1,7 @@
+{
+  "fetched_at": "2026-06-06T10:00:00Z",
+  "log_groups": [
+    {"name": "/aws/lambda/api-prod", "is_production": true, "retention_in_days": 730,
+     "kms_key_id": "arn:aws:kms:us-east-1:123456789012:key/logs-key"}
+  ]
+}

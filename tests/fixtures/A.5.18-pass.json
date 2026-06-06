@@ -1,0 +1,14 @@
+{
+  "kind": "access_review",
+  "owner": "iso-compliance@acme.com",
+  "signature_verified": true,
+  "attested_at": "2026-04-15T00:00:00Z",
+  "attested_fields": {
+    "cycle_id": "2026Q1",
+    "completed_at": "2026-04-15T00:00:00Z",
+    "cycle_age_days": 52,
+    "reviewers": ["alice@acme.com", "bob@acme.com"],
+    "decisions_total": 145,
+    "subjects_total": 145
+  }
+}

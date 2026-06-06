@@ -1,0 +1,45 @@
+apiVersion: concord.dev/v1
+kind: Control
+metadata:
+  id: ISO27001-A.5.18-access-rights
+  name: access-rights-reviewed
+  title: User access rights are reviewed on a documented cadence
+  framework: iso27001
+  category: Organisational Controls
+  severity: high
+  tags: [iso27001, access-reviews]
+  owners:
+    - team: it-security
+spec:
+  description: |
+    ISO/IEC 27001:2022 A.5.18 requires user access rights to be
+    reviewed at regular intervals. Concord reads a signed
+    access-review attestation that records the last cycle's
+    completion date, the reviewers, and the count of decisions
+    (keep/revoke/escalate).
+  rationale: |
+    Stale access rights are the highest-confidence ISO finding —
+    quarterly review cadence with documented decisions per
+    subject is the bar.
+  evidence:
+    - id: attestation
+      source: attestation
+      type: policy_attestation
+      fixture: ../tests/fixtures/A.5.18-pass.json
+      params:
+        kind: access_review
+  policy:
+    engine: rego
+    package: concord.iso27001.a_5_18
+    file: ../policies/a_5_18.rego
+  remediation:
+    runbook: docs/remediation/iso27001-A.5.18.md
+    auto_fix: false
+    estimated_effort: 1w
+  mappings:
+    iso27001: ["A.5.18"]
+    soc2: ["CC6.2"]
+    nist_csf: ["PR.AA-05"]
+    nist_800_53: ["AC-2", "AC-2(j)"]
+  status: stable
+  blocking: true

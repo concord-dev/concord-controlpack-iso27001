@@ -1,0 +1,45 @@
+apiVersion: concord.dev/v1
+kind: Control
+metadata:
+  id: ISO27001-A.6.3-awareness-training
+  name: security-awareness-training-current
+  title: Every active employee has completed security-awareness training in the last 12 months
+  framework: iso27001
+  category: People Controls
+  severity: high
+  tags: [iso27001, training, awareness]
+  owners:
+    - team: people-ops
+spec:
+  description: |
+    ISO/IEC 27001:2022 A.6.3 requires personnel to receive appropriate
+    information-security awareness training. Concord reads the
+    Concord training_completion table (Φ-9 schema) and verifies every
+    active person has a completion in the last 365 days.
+  rationale: |
+    Lapsed training is one of the cheapest A.6 audit findings.
+    Tracking via Concord's own training_completion store keeps this
+    test in the same system that auditors already have access to.
+  evidence:
+    - id: attestation
+      source: attestation
+      type: policy_attestation
+      fixture: ../tests/fixtures/A.6.3-pass.json
+      params:
+        kind: training_register
+  policy:
+    engine: rego
+    package: concord.iso27001.a_6_3
+    file: ../policies/a_6_3.rego
+  remediation:
+    runbook: docs/remediation/iso27001-A.6.3.md
+    auto_fix: false
+    estimated_effort: 2w
+  mappings:
+    iso27001: ["A.6.3"]
+    soc2: ["CC1.4"]
+    nist_csf: ["PR.AT-01"]
+    nist_800_53: ["AT-2"]
+    hipaa: ["164.308(a)(5)(i)"]
+  status: stable
+  blocking: true

@@ -1,0 +1,7 @@
+{
+  "fetched_at": "2026-06-06T10:00:00Z",
+  "vpcs": [
+    {"id": "vpc-aaa", "region": "us-east-1", "flow_logs_enabled": true},
+    {"id": "vpc-bbb", "region": "eu-west-1", "flow_logs_enabled": true}
+  ]
+}

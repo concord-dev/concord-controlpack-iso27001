@@ -1,0 +1,11 @@
+{
+  "fetched_at": "2026-06-06T10:00:00Z",
+  "administrators": [
+    {"username": "a", "has_access_key": false, "mfa_enabled": false},
+    {"username": "b", "has_access_key": true,  "mfa_enabled": false},
+    {"username": "c", "has_access_key": false, "mfa_enabled": true},
+    {"username": "d", "has_access_key": false, "mfa_enabled": true},
+    {"username": "e", "has_access_key": false, "mfa_enabled": true},
+    {"username": "f", "has_access_key": false, "mfa_enabled": true}
+  ]
+}

@@ -1,0 +1,41 @@
+apiVersion: concord.dev/v1
+kind: Control
+metadata:
+  id: ISO27001-A.5.37-documented-procedures
+  name: operating-procedures-attested
+  title: Documented operating procedures exist for security-relevant operations
+  framework: iso27001
+  category: Organisational Controls
+  severity: medium
+  tags: [iso27001, runbooks, procedures]
+  owners:
+    - team: it-security
+spec:
+  description: |
+    ISO/IEC 27001:2022 A.5.37 requires operating procedures for IT
+    operations to be documented and made available. Concord reads a
+    cosigned attestation of the runbook catalogue.
+  rationale: |
+    Catalogue completeness — every documented attack surface has a
+    runbook — is what A.5.37 audits land on.
+  evidence:
+    - id: attestation
+      source: attestation
+      type: policy_attestation
+      fixture: ../tests/fixtures/A.5.37-pass.json
+      params:
+        kind: runbook_catalogue
+  policy:
+    engine: rego
+    package: concord.iso27001.a_5_37
+    file: ../policies/a_5_37.rego
+  remediation:
+    runbook: docs/remediation/iso27001-A.5.37.md
+    auto_fix: false
+    estimated_effort: 1w
+  mappings:
+    iso27001: ["A.5.37"]
+    soc2: ["CC2.1"]
+    nist_csf: ["PR.IR-01"]
+  status: stable
+  blocking: true

@@ -1,0 +1,11 @@
+{
+  "fetched_at": "2026-06-06T10:00:00Z",
+  "trails": [
+    {
+      "name": "single-region",
+      "is_multi_region_trail": false,
+      "is_logging": true,
+      "event_selectors": []
+    }
+  ]
+}

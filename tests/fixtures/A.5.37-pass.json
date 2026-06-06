@@ -1,0 +1,14 @@
+{
+  "kind": "runbook_catalogue",
+  "owner": "ops@acme.com",
+  "signature_verified": true,
+  "attested_fields": {
+    "runbooks": [
+      {"id": "incident_response", "review_age_days": 30, "url": "docs/runbooks/incident-response.md"},
+      {"id": "access_provisioning", "review_age_days": 45, "url": "docs/runbooks/access-provisioning.md"},
+      {"id": "access_revocation", "review_age_days": 45, "url": "docs/runbooks/access-revocation.md"},
+      {"id": "backup_restore", "review_age_days": 60, "url": "docs/runbooks/backup-restore.md"},
+      {"id": "vulnerability_patching", "review_age_days": 90, "url": "docs/runbooks/vuln-patching.md"}
+    ]
+  }
+}

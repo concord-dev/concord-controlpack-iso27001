@@ -1,0 +1,12 @@
+{
+  "kind": "access_review",
+  "signature_verified": false,
+  "attested_fields": {
+    "cycle_id": "2025Q3",
+    "completed_at": "2025-10-15T00:00:00Z",
+    "cycle_age_days": 240,
+    "reviewers": ["alice@acme.com"],
+    "decisions_total": 89,
+    "subjects_total": 145
+  }
+}

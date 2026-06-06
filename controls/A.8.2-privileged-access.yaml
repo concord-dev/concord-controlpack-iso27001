@@ -1,0 +1,46 @@
+apiVersion: concord.dev/v1
+kind: Control
+metadata:
+  id: ISO27001-A.8.2-privileged-access
+  name: privileged-access-restricted
+  title: IAM administrators are scarce, named, and use roles not standing access keys
+  framework: iso27001
+  category: Technological Controls
+  severity: critical
+  tags: [iso27001, privileged-access]
+  owners:
+    - team: it-security
+spec:
+  description: |
+    ISO/IEC 27001:2022 A.8.2 requires privileged access rights to be
+    restricted and managed. Concord verifies the count of IAM
+    principals with AdministratorAccess (or wildcard *:* equivalent)
+    is bounded, that no admin holds long-lived access keys, and that
+    every admin is assumable only via SSO + MFA.
+  rationale: |
+    Standing IAM admin keys are the single highest-blast-radius
+    finding under A.8.2. Auditors want admin count + last-rotation
+    + MFA-enrolled status.
+  evidence:
+    - id: iam_admins
+      source: aws
+      type: iam_privileged_principals
+      fixture: ../tests/fixtures/A.8.2-pass.json
+      params:
+        region: ${env.AWS_REGION}
+  policy:
+    engine: rego
+    package: concord.iso27001.a_8_2
+    file: ../policies/a_8_2.rego
+  remediation:
+    runbook: docs/remediation/iso27001-A.8.2.md
+    auto_fix: false
+    estimated_effort: 1d
+  mappings:
+    iso27001: ["A.8.2"]
+    soc2: ["CC6.1", "CC6.3"]
+    nist_csf: ["PR.AA-05"]
+    nist_800_53: ["AC-6"]
+    hipaa: ["164.308(a)(4)(ii)(B)"]
+  status: stable
+  blocking: true

@@ -1,0 +1,56 @@
+apiVersion: concord.dev/v1
+kind: Control
+
+metadata:
+  id: ISO27001-A.5.15-access-control-policy
+  name: access-control-policy-attestation
+  title: Documented access-control policy exists, is current, and is signed by management
+  framework: iso27001
+  category: Organisational Controls
+  severity: high
+  tags:
+    - iso27001
+    - access-control
+    - policy
+  owners:
+    - team: it-security
+
+spec:
+  description: |
+    ISO/IEC 27001:2022 A.5.15 requires an access-control policy that
+    defines rules for granting, revoking, and reviewing access. Concord
+    reads a cosigned attestation YAML from the policy repository.
+
+  rationale: |
+    A.5.15 is the meta-control that anchors A.5.16, A.5.17, A.5.18, and
+    A.8.2. Without a current signed policy, auditors will not credit
+    the operational controls below it.
+
+  evidence:
+    - id: attestation
+      source: attestation
+      type: policy_attestation
+      fixture: ../tests/fixtures/A.5.15-pass.json
+      params:
+        kind: access_control_policy
+
+  policy:
+    engine: rego
+    package: concord.iso27001.a_5_15
+    file: ../policies/a_5_15.rego
+
+  remediation:
+    runbook: docs/remediation/iso27001-A.5.15.md
+    auto_fix: false
+    estimated_effort: 1d
+
+  mappings:
+    iso27001:
+      - "A.5.15"
+    soc2:
+      - "CC6.1"
+    nist_csf:
+      - "PR.AA-01"
+
+  status: stable
+  blocking: true

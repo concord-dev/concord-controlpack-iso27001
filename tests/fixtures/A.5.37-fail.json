@@ -1,0 +1,9 @@
+{
+  "kind": "runbook_catalogue",
+  "signature_verified": false,
+  "attested_fields": {
+    "runbooks": [
+      {"id": "incident_response", "review_age_days": 500}
+    ]
+  }
+}

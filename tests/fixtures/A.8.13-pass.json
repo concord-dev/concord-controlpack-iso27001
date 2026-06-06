@@ -1,0 +1,7 @@
+{
+  "fetched_at": "2026-06-06T10:00:00Z",
+  "tests": [
+    {"id": "rt-2026-05", "age_days": 30, "status": "succeeded", "data_set": "prod-postgres"},
+    {"id": "rt-2026-02", "age_days": 120, "status": "succeeded", "data_set": "prod-postgres"}
+  ]
+}

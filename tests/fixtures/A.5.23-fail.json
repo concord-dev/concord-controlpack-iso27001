@@ -1,0 +1,7 @@
+{
+  "fetched_at": "2026-06-06T10:00:00Z",
+  "active_regions": ["us-east-1", "eu-west-1"],
+  "recorders": [
+    {"name": "default", "region": "us-east-1", "recording": true, "all_supported": false}
+  ]
+}

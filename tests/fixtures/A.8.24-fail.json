@@ -1,0 +1,13 @@
+{
+  "fetched_at": "2026-06-06T10:00:00Z",
+  "buckets": [
+    {
+      "name": "prod-data",
+      "policy": {
+        "Statement": [
+          {"Effect": "Allow", "Principal": {"AWS": "*"}, "Action": "s3:GetObject"}
+        ]
+      }
+    }
+  ]
+}

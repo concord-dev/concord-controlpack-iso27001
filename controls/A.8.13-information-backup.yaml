@@ -1,0 +1,42 @@
+apiVersion: concord.dev/v1
+kind: Control
+metadata:
+  id: ISO27001-A.8.13-information-backup
+  name: information-backup-tested
+  title: Backup restore is exercised on a documented cadence with a successful last run
+  framework: iso27001
+  category: Technological Controls
+  severity: high
+  tags: [iso27001, backup, restore]
+  owners:
+    - team: platform
+spec:
+  description: |
+    ISO/IEC 27001:2022 A.8.13 requires backup *and* restoration testing.
+    Concord verifies the latest scheduled restore-test has run within
+    the configured window and was successful.
+  rationale: |
+    A.5.30 covers the existence of backups; A.8.13 covers whether they
+    actually work. Untested backups are a recurring audit finding.
+  evidence:
+    - id: restore_tests
+      source: aws
+      type: backup_restore_tests
+      fixture: ../tests/fixtures/A.8.13-pass.json
+      params:
+        region: ${env.AWS_REGION}
+  policy:
+    engine: rego
+    package: concord.iso27001.a_8_13
+    file: ../policies/a_8_13.rego
+  remediation:
+    runbook: docs/remediation/iso27001-A.8.13.md
+    auto_fix: false
+    estimated_effort: 4h
+  mappings:
+    iso27001: ["A.8.13"]
+    soc2: ["A1.3"]
+    nist_csf: ["RC.RP-01"]
+    nist_800_53: ["CP-9(1)"]
+  status: stable
+  blocking: true

@@ -1,0 +1,10 @@
+{
+  "fetched_at": "2026-06-06T10:00:00Z",
+  "active_regions": ["us-east-1", "eu-west-1"],
+  "guardduty_detectors": [
+    {"region": "us-east-1", "status": "ENABLED"},
+    {"region": "eu-west-1", "status": "ENABLED"}
+  ],
+  "inspector_account_enabled": true,
+  "inspector_resource_scans": ["EC2", "ECR", "Lambda"]
+}

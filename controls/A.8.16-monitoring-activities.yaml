@@ -1,0 +1,44 @@
+apiVersion: concord.dev/v1
+kind: Control
+metadata:
+  id: ISO27001-A.8.16-monitoring-activities
+  name: monitoring-cloudtrail-coverage
+  title: Networks, systems, and applications are monitored continuously (CloudTrail multi-region + management events)
+  framework: iso27001
+  category: Technological Controls
+  severity: critical
+  tags: [iso27001, monitoring]
+  owners:
+    - team: security
+spec:
+  description: |
+    ISO/IEC 27001:2022 A.8.16 requires continuous monitoring of
+    networks, systems, and applications for anomalous behaviour.
+    Concord verifies CloudTrail covers every region with management
+    events enabled.
+  rationale: |
+    Single-region CloudTrail is a common audit gap — it provides
+    visibility into one region's API plane only. A.8.16 expects
+    end-to-end account coverage.
+  evidence:
+    - id: cloudtrail
+      source: aws
+      type: cloudtrail_trails
+      fixture: ../tests/fixtures/A.8.16-pass.json
+      params:
+        region: ${env.AWS_REGION}
+  policy:
+    engine: rego
+    package: concord.iso27001.a_8_16
+    file: ../policies/a_8_16.rego
+  remediation:
+    runbook: docs/remediation/iso27001-A.8.16.md
+    auto_fix: true
+    estimated_effort: 30m
+  mappings:
+    iso27001: ["A.8.16"]
+    soc2: ["CC7.2"]
+    nist_csf: ["DE.CM-1"]
+    nist_800_53: ["CA-7", "AU-2"]
+  status: stable
+  blocking: true

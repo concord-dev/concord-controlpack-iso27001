@@ -1,0 +1,11 @@
+{
+  "kind": "training_register",
+  "owner": "people-ops@acme.com",
+  "signature_verified": true,
+  "attested_fields": {
+    "active_people": [
+      {"email": "alice@acme.com", "last_completion_days_ago": 90},
+      {"email": "bob@acme.com",   "last_completion_days_ago": 200}
+    ]
+  }
+}

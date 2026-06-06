@@ -1,0 +1,44 @@
+apiVersion: concord.dev/v1
+kind: Control
+metadata:
+  id: ISO27001-A.8.20-network-security
+  name: vpc-flow-logs-enabled
+  title: VPC flow logs are enabled in every VPC
+  framework: iso27001
+  category: Technological Controls
+  severity: high
+  tags: [iso27001, networks, flow-logs]
+  owners:
+    - team: platform
+spec:
+  description: |
+    ISO/IEC 27001:2022 A.8.20 requires networks to be managed and
+    controlled to protect information in systems and applications.
+    Concord verifies every VPC has flow logs enabled.
+  rationale: |
+    VPC flow logs are required for post-incident network forensics.
+    Without them, lateral-movement investigations and exfil traffic
+    analysis have no data source.
+  evidence:
+    - id: vpc_flow_logs
+      source: aws
+      type: vpc_flow_logs
+      fixture: ../tests/fixtures/A.8.20-pass.json
+      params:
+        region: ${env.AWS_REGION}
+  policy:
+    engine: rego
+    package: concord.iso27001.a_8_20
+    file: ../policies/a_8_20.rego
+  remediation:
+    runbook: docs/remediation/iso27001-A.8.20.md
+    auto_fix: true
+    estimated_effort: 1h
+  mappings:
+    iso27001: ["A.8.20", "A.8.22"]
+    soc2: ["CC6.6"]
+    nist_csf: ["DE.AE-3"]
+    nist_800_53: ["AC-4", "SC-7"]
+    cis_aws: ["5.2"]
+  status: stable
+  blocking: true

@@ -1,0 +1,44 @@
+apiVersion: concord.dev/v1
+kind: Control
+metadata:
+  id: ISO27001-A.5.23-cloud-services-security
+  name: cloud-services-config-recorder
+  title: AWS Config recorder is enabled in every region, capturing configuration drift
+  framework: iso27001
+  category: Organisational Controls
+  severity: high
+  tags: [iso27001, cloud, drift]
+  owners:
+    - team: platform
+spec:
+  description: |
+    ISO/IEC 27001:2022 A.5.23 requires processes to acquire, use, and
+    manage cloud services according to information security requirements.
+    Concord verifies AWS Config recorder is enabled in every active
+    region with the all-supported resource types selector.
+  rationale: |
+    Config recorder is the only AWS-native mechanism that captures
+    configuration drift across the full resource surface. Without it,
+    A.5.23 cannot evidence that cloud-resource changes are observed.
+  evidence:
+    - id: config_recorder
+      source: aws
+      type: config_recorder_status
+      fixture: ../tests/fixtures/A.5.23-pass.json
+      params:
+        region: ${env.AWS_REGION}
+  policy:
+    engine: rego
+    package: concord.iso27001.a_5_23
+    file: ../policies/a_5_23.rego
+  remediation:
+    runbook: docs/remediation/iso27001-A.5.23.md
+    auto_fix: true
+    estimated_effort: 1h
+  mappings:
+    iso27001: ["A.5.23"]
+    soc2: ["CC7.1"]
+    nist_csf: ["DE.CM-1", "PR.PS-01"]
+    nist_800_53: ["CM-3", "CA-7"]
+  status: stable
+  blocking: true

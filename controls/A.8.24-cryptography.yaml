@@ -1,0 +1,44 @@
+apiVersion: concord.dev/v1
+kind: Control
+metadata:
+  id: ISO27001-A.8.24-cryptography
+  name: use-of-cryptography-tls-enforced
+  title: S3 buckets enforce TLS on every request via bucket policy
+  framework: iso27001
+  category: Technological Controls
+  severity: critical
+  tags: [iso27001, encryption, tls]
+  owners:
+    - team: platform
+spec:
+  description: |
+    ISO/IEC 27001:2022 A.8.24 requires rules for the effective use of
+    cryptography. Concord verifies every S3 bucket carries a bucket
+    policy that denies requests where aws:SecureTransport is false.
+  rationale: |
+    A.8.24 audits expect TLS enforcement to be configured at the
+    resource policy level, not just relied on from clients.
+  evidence:
+    - id: ephi_bucket_policies
+      source: aws
+      type: s3_bucket_policy
+      fixture: ../tests/fixtures/A.8.24-pass.json
+      params:
+        region: ${env.AWS_REGION}
+  policy:
+    engine: rego
+    package: concord.iso27001.a_8_24
+    file: ../policies/a_8_24.rego
+  remediation:
+    runbook: docs/remediation/iso27001-A.8.24.md
+    auto_fix: true
+    estimated_effort: 30m
+  mappings:
+    iso27001: ["A.8.24"]
+    soc2: ["CC6.7"]
+    nist_csf: ["PR.DS-02"]
+    nist_800_53: ["SC-8", "SC-13"]
+    hipaa: ["164.312(e)(1)", "164.312(e)(2)(ii)"]
+    pci_dss: ["4.1", "4.2"]
+  status: stable
+  blocking: true

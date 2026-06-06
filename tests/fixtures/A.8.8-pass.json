@@ -1,0 +1,7 @@
+{
+  "fetched_at": "2026-06-06T10:00:00Z",
+  "issues": [
+    {"id": "SNYK-JS-1", "title": "prototype pollution", "severity": "high", "age_days": 5},
+    {"id": "SNYK-JS-2", "title": "ReDoS",               "severity": "medium", "age_days": 90}
+  ]
+}

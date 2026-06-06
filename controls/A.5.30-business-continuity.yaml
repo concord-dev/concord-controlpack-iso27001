@@ -1,0 +1,45 @@
+apiVersion: concord.dev/v1
+kind: Control
+metadata:
+  id: ISO27001-A.5.30-business-continuity
+  name: ict-readiness-backups
+  title: Production data stores have automated backups with tamper-resistant retention
+  framework: iso27001
+  category: Organisational Controls
+  severity: critical
+  tags: [iso27001, backup, continuity]
+  owners:
+    - team: platform
+spec:
+  description: |
+    ISO/IEC 27001:2022 A.5.30 requires ICT readiness for business
+    continuity. Concord verifies every RDS instance and DynamoDB table
+    tagged production=true has automated backups with retention ≥ 35
+    days, and that AWS Backup vault locking is configured.
+  rationale: |
+    Vault locking is the operational difference between a "backup
+    policy" and a "backup the auditor accepts" — without it, a
+    compromised credential can delete backups.
+  evidence:
+    - id: prod_backups
+      source: aws
+      type: backup_status
+      fixture: ../tests/fixtures/A.5.30-pass.json
+      params:
+        region: ${env.AWS_REGION}
+  policy:
+    engine: rego
+    package: concord.iso27001.a_5_30
+    file: ../policies/a_5_30.rego
+  remediation:
+    runbook: docs/remediation/iso27001-A.5.30.md
+    auto_fix: false
+    estimated_effort: 4h
+  mappings:
+    iso27001: ["A.5.30", "A.8.13"]
+    soc2: ["A1.2", "A1.3"]
+    nist_csf: ["PR.IR-04", "RC.RP-01"]
+    nist_800_53: ["CP-9", "CP-10"]
+    hipaa: ["164.308(a)(7)(ii)(A)"]
+  status: stable
+  blocking: true

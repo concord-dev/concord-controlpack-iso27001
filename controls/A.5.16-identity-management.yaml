@@ -1,0 +1,45 @@
+apiVersion: concord.dev/v1
+kind: Control
+metadata:
+  id: ISO27001-A.5.16-identity-management
+  name: identity-management-unique
+  title: Every IAM identity is uniquely attributable, root account is dormant
+  framework: iso27001
+  category: Organisational Controls
+  severity: critical
+  tags: [iso27001, identity, access-control]
+  owners:
+    - team: it-security
+spec:
+  description: |
+    ISO/IEC 27001:2022 A.5.16 requires the full life-cycle of identities
+    to be managed. Concord verifies (a) AWS root has no access keys and
+    has been idle for ≥90 days, (b) no IAM user shares credentials,
+    (c) service accounts have no console login.
+  rationale: |
+    Shared credentials and root-account usage break A.5.16 the same way
+    they break HIPAA §164.312(a)(2)(i): events cannot be attributed to a
+    real identity, so the rest of A.5.18 (access reviews) and A.8.15
+    (logging) lose evidentiary value.
+  evidence:
+    - id: iam_identity
+      source: aws
+      type: iam_account_summary
+      fixture: ../tests/fixtures/A.5.16-pass.json
+      params:
+        region: ${env.AWS_REGION}
+  policy:
+    engine: rego
+    package: concord.iso27001.a_5_16
+    file: ../policies/a_5_16.rego
+  remediation:
+    runbook: docs/remediation/iso27001-A.5.16.md
+    auto_fix: false
+    estimated_effort: 4h
+  mappings:
+    iso27001: ["A.5.16"]
+    soc2: ["CC6.1"]
+    nist_csf: ["PR.AA-01", "PR.AA-02"]
+    hipaa: ["164.312(a)(2)(i)"]
+  status: stable
+  blocking: true

@@ -1,0 +1,23 @@
+{
+  "kind": "vendor_register",
+  "owner": "vendor-mgmt@acme.com",
+  "signature_verified": true,
+  "attested_at": "2026-06-01T00:00:00Z",
+  "attested_fields": {
+    "vendors": [
+      {
+        "name": "Datadog",
+        "tier": "tier_1",
+        "certifications": [
+          {"type": "soc2", "expires_at": "2027-03-01", "expired": false},
+          {"type": "iso27001", "expires_at": "2027-09-01", "expired": false}
+        ]
+      },
+      {
+        "name": "Stripe",
+        "tier": "tier_1",
+        "certifications": [{"type": "soc2", "expires_at": "2027-01-01", "expired": false}]
+      }
+    ]
+  }
+}

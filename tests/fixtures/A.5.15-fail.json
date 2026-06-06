@@ -1,0 +1,9 @@
+{
+  "kind": "wrong_kind",
+  "attested_at": "2023-01-01T00:00:00Z",
+  "signature_verified": false,
+  "attested_fields": {
+    "approval_date": "2023-01-01T00:00:00Z",
+    "next_review_due": "2024-01-01T00:00:00Z"
+  }
+}

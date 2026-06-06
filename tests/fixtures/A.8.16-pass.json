@@ -1,0 +1,12 @@
+{
+  "fetched_at": "2026-06-06T10:00:00Z",
+  "trails": [
+    {
+      "name": "main",
+      "is_multi_region_trail": true,
+      "is_logging": true,
+      "log_file_validation_enabled": true,
+      "event_selectors": [{"include_management_events": true, "read_write_type": "All"}]
+    }
+  ]
+}

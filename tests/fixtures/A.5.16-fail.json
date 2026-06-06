@@ -1,0 +1,9 @@
+{
+  "fetched_at": "2026-06-06T10:00:00Z",
+  "account_access_keys_present": 1,
+  "root_last_used_days_ago": 5,
+  "shared_credentials": [{"username": "ops@acme.com", "shared_count": 3}],
+  "users": [
+    {"username": "ci-deployer", "is_service_account": true, "has_console_login": true}
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "fetched_at": "2026-06-06T10:00:00Z",
+  "rds_instances": [
+    {"identifier": "app-prod", "tags": {"production": "true"}, "backup_retention_period": 7}
+  ],
+  "dynamodb_tables": [
+    {"name": "events-prod", "tags": {"production": "true"}, "point_in_time_recovery_enabled": false}
+  ],
+  "backup_vaults": [
+    {"name": "prod-vault", "holds_prod": true, "locked": false}
+  ]
+}

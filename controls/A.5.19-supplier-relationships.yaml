@@ -1,0 +1,44 @@
+apiVersion: concord.dev/v1
+kind: Control
+metadata:
+  id: ISO27001-A.5.19-supplier-relationships
+  name: supplier-information-security
+  title: Tier-1 suppliers carry current security certifications, tracked in the Concord vendor register
+  framework: iso27001
+  category: Organisational Controls
+  severity: high
+  tags: [iso27001, vendor, tprm]
+  owners:
+    - team: vendor-management
+spec:
+  description: |
+    ISO/IEC 27001:2022 A.5.19 requires processes to manage information
+    security risks associated with supplier relationships. Concord
+    reads the vendor-management attestation export (auto-emitted by
+    `concord vendor` workflows) and verifies every tier-1 supplier
+    has a current SOC 2 or ISO 27001 certification on file.
+  rationale: |
+    Tier-1 supplier risk is the most common audit finding under A.5.19.
+    The Concord vendor register provides the structured evidence; the
+    attestation export gives the auditor a frozen snapshot.
+  evidence:
+    - id: attestation
+      source: attestation
+      type: policy_attestation
+      fixture: ../tests/fixtures/A.5.19-pass.json
+      params:
+        kind: vendor_register
+  policy:
+    engine: rego
+    package: concord.iso27001.a_5_19
+    file: ../policies/a_5_19.rego
+  remediation:
+    runbook: docs/remediation/iso27001-A.5.19.md
+    auto_fix: false
+    estimated_effort: 1d
+  mappings:
+    iso27001: ["A.5.19", "A.5.20"]
+    soc2: ["CC9.2"]
+    nist_csf: ["GV.SC-04"]
+  status: stable
+  blocking: true

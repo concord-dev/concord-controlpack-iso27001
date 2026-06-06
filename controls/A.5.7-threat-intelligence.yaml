@@ -1,0 +1,63 @@
+apiVersion: concord.dev/v1
+kind: Control
+
+metadata:
+  id: ISO27001-A.5.7-threat-intelligence
+  name: threat-intelligence-active
+  title: Threat-intelligence telemetry (GuardDuty) is collected, prioritised, and acted on
+  framework: iso27001
+  category: Organisational Controls
+  severity: high
+  tags:
+    - iso27001
+    - threat-intel
+    - detection
+  owners:
+    - team: security
+
+spec:
+  description: |
+    ISO/IEC 27001:2022 A.5.7 requires information related to information
+    security threats to be collected and analysed to produce threat
+    intelligence. Concord verifies GuardDuty is enabled in every region
+    carrying production workloads, and that there are no unresolved
+    HIGH-severity findings older than the configured SLA.
+
+  rationale: |
+    GuardDuty is the operational form A.5.7 takes in AWS environments —
+    it aggregates VPC flow logs, DNS logs, and CloudTrail into a managed
+    threat-intel feed. Disabled regions are blind spots; lingering
+    HIGH-severity findings mean the threat-intel loop is open but not
+    closing.
+
+  evidence:
+    - id: guardduty
+      source: aws
+      type: guardduty_detectors
+      fixture: ../tests/fixtures/A.5.7-pass.json
+      params:
+        region: ${env.AWS_REGION}
+
+  policy:
+    engine: rego
+    package: concord.iso27001.a_5_7
+    file: ../policies/a_5_7.rego
+
+  remediation:
+    runbook: docs/remediation/iso27001-A.5.7.md
+    auto_fix: true
+    estimated_effort: 1h
+
+  mappings:
+    iso27001:
+      - "A.5.7"
+    soc2:
+      - "CC7.1"
+    nist_csf:
+      - "DE.AE-7"
+      - "DE.CM-1"
+    hipaa:
+      - "164.308(a)(5)(ii)(B)"
+
+  status: stable
+  blocking: true
