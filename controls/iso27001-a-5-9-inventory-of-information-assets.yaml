@@ -1,0 +1,40 @@
+apiVersion: concord.dev/v1
+kind: Control
+
+metadata:
+  id: ISO27001-A.5.9-inventory-of-information-assets
+  name: iso27001-a-5-9-inventory-of-information-assets
+  title: Inventory of information assets is maintained and up to date
+  framework: iso27001
+  severity: high
+  tags: []
+  owners:
+    - team: concord-dev
+
+spec:
+  description: |
+    TODO: describe what ISO27001-A.5.9-inventory-of-information-assets enforces.
+
+  evidence:
+    - id: iso27001_a_5_9_inventory_of_information_assets
+      source: attestation
+      type: policy_attestation
+      fixture: ../tests/fixtures/iso27001-a-5-9-inventory-of-information-assets-pass.json
+      params:
+              schema: TODO  # e.g. ropa-v1, dpia-v1, dpa-v1, ism-v1
+              signers:
+                - dpo@acme.com
+              max_age_days: 365
+
+  policy:
+    engine: rego
+    package: concord.iso27001.iso27001_a_5_9_inventory_of_information_assets
+    file: ../policies/iso27001-a-5-9-inventory-of-information-assets.rego
+
+  remediation:
+    runbook: docs/remediation/iso27001-a-5-9-inventory-of-information-assets.md
+    auto_fix: false
+    estimated_effort: 30m
+
+  status: draft
+  blocking: false

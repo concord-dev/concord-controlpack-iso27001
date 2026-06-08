@@ -1,0 +1,37 @@
+apiVersion: concord.dev/v1
+kind: Control
+
+metadata:
+  id: ISO27001-A.8.4-access-to-source-code
+  name: iso27001-a-8-4-access-to-source-code
+  title: Access to source code is restricted to authorised personnel
+  framework: iso27001
+  severity: medium
+  tags: []
+  owners:
+    - team: concord-dev
+
+spec:
+  description: |
+    TODO: describe what ISO27001-A.8.4-access-to-source-code enforces.
+
+  evidence:
+    - id: iso27001_a_8_4_access_to_source_code
+      source: github
+      type: github_branch_protection
+      fixture: ../tests/fixtures/iso27001-a-8-4-access-to-source-code-pass.json
+      params:
+              org: acme
+
+  policy:
+    engine: rego
+    package: concord.iso27001.iso27001_a_8_4_access_to_source_code
+    file: ../policies/iso27001-a-8-4-access-to-source-code.rego
+
+  remediation:
+    runbook: docs/remediation/iso27001-a-8-4-access-to-source-code.md
+    auto_fix: false
+    estimated_effort: 30m
+
+  status: draft
+  blocking: false

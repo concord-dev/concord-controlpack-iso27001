@@ -1,0 +1,8 @@
+{
+  "iso27001_a_8_4_access_to_source_code": {
+    "fetched_at": "2026-01-01T00:00:00Z",
+    "repos": [
+      { "full_name": "acme/api", "protected_default_branch": true, "required_status_checks": true }
+    ]
+  }
+}

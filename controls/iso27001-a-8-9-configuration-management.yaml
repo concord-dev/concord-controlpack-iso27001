@@ -1,0 +1,38 @@
+apiVersion: concord.dev/v1
+kind: Control
+
+metadata:
+  id: ISO27001-A.8.9-configuration-management
+  name: iso27001-a-8-9-configuration-management
+  title: Configuration baselines exist and drift is detected
+  framework: iso27001
+  severity: medium
+  tags: []
+  owners:
+    - team: concord-dev
+
+spec:
+  description: |
+    TODO: describe what ISO27001-A.8.9-configuration-management enforces.
+
+  evidence:
+    - id: iso27001_a_8_9_configuration_management
+      source: aws
+      type: aws_resource_inventory
+      fixture: ../tests/fixtures/iso27001-a-8-9-configuration-management-pass.json
+      params:
+              service: TODO  # e.g. s3, iam, kms
+              region: us-east-1
+
+  policy:
+    engine: rego
+    package: concord.iso27001.iso27001_a_8_9_configuration_management
+    file: ../policies/iso27001-a-8-9-configuration-management.rego
+
+  remediation:
+    runbook: docs/remediation/iso27001-a-8-9-configuration-management.md
+    auto_fix: false
+    estimated_effort: 30m
+
+  status: draft
+  blocking: false

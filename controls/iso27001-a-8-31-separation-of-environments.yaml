@@ -1,0 +1,38 @@
+apiVersion: concord.dev/v1
+kind: Control
+
+metadata:
+  id: ISO27001-A.8.31-separation-of-environments
+  name: iso27001-a-8-31-separation-of-environments
+  title: Development, test, and production environments are separated
+  framework: iso27001
+  severity: medium
+  tags: []
+  owners:
+    - team: concord-dev
+
+spec:
+  description: |
+    TODO: describe what ISO27001-A.8.31-separation-of-environments enforces.
+
+  evidence:
+    - id: iso27001_a_8_31_separation_of_environments
+      source: aws
+      type: aws_resource_inventory
+      fixture: ../tests/fixtures/iso27001-a-8-31-separation-of-environments-pass.json
+      params:
+              service: TODO  # e.g. s3, iam, kms
+              region: us-east-1
+
+  policy:
+    engine: rego
+    package: concord.iso27001.iso27001_a_8_31_separation_of_environments
+    file: ../policies/iso27001-a-8-31-separation-of-environments.rego
+
+  remediation:
+    runbook: docs/remediation/iso27001-a-8-31-separation-of-environments.md
+    auto_fix: false
+    estimated_effort: 30m
+
+  status: draft
+  blocking: false

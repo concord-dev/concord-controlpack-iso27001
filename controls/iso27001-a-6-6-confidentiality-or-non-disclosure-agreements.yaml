@@ -1,0 +1,40 @@
+apiVersion: concord.dev/v1
+kind: Control
+
+metadata:
+  id: ISO27001-A.6.6-confidentiality-or-non-disclosure-agreements
+  name: iso27001-a-6-6-confidentiality-or-non-disclosure-agreements
+  title: Confidentiality / NDA agreements are signed where required
+  framework: iso27001
+  severity: medium
+  tags: []
+  owners:
+    - team: concord-dev
+
+spec:
+  description: |
+    TODO: describe what ISO27001-A.6.6-confidentiality-or-non-disclosure-agreements enforces.
+
+  evidence:
+    - id: iso27001_a_6_6_confidentiality_or_non_disclosure_agreements
+      source: attestation
+      type: policy_attestation
+      fixture: ../tests/fixtures/iso27001-a-6-6-confidentiality-or-non-disclosure-agreements-pass.json
+      params:
+              schema: TODO  # e.g. ropa-v1, dpia-v1, dpa-v1, ism-v1
+              signers:
+                - dpo@acme.com
+              max_age_days: 365
+
+  policy:
+    engine: rego
+    package: concord.iso27001.iso27001_a_6_6_confidentiality_or_non_disclosure_agreements
+    file: ../policies/iso27001-a-6-6-confidentiality-or-non-disclosure-agreements.rego
+
+  remediation:
+    runbook: docs/remediation/iso27001-a-6-6-confidentiality-or-non-disclosure-agreements.md
+    auto_fix: false
+    estimated_effort: 30m
+
+  status: draft
+  blocking: false

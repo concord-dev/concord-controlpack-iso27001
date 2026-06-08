@@ -3,7 +3,7 @@ kind: ControlPack
 metadata:
   id: iso27001
   name: iso27001
-  version: v0.2.0
+  version: v0.3.0
   framework_label: ISO/IEC 27001:2022
   attribution:
     sources:
@@ -11,35 +11,94 @@ metadata:
       - steampipe-powerpipe
       - aws-audit-manager
       - oscal-content
+      - iso27001-2022-annex-a
 spec:
   controls:
-    - ISO27001-A.5.1-information-security-policies
-    - ISO27001-A.5.7-threat-intelligence
     - ISO27001-A.5.15-access-control-policy
     - ISO27001-A.5.16-identity-management
     - ISO27001-A.5.17-authentication-information
     - ISO27001-A.5.18-access-rights
     - ISO27001-A.5.19-supplier-relationships
+    - ISO27001-A.5.1-information-security-policies
     - ISO27001-A.5.23-cloud-services-security
     - ISO27001-A.5.30-business-continuity
     - ISO27001-A.5.33-records-protection
     - ISO27001-A.5.37-documented-procedures
+    - ISO27001-A.5.7-threat-intelligence
     - ISO27001-A.6.3-awareness-training
-    - ISO27001-A.8.2-privileged-access
-    - ISO27001-A.8.5-secure-authentication
-    - ISO27001-A.8.7-malware-protection
-    - ISO27001-A.8.8-vulnerability-management
     - ISO27001-A.8.13-information-backup
     - ISO27001-A.8.15-logging
     - ISO27001-A.8.16-monitoring-activities
     - ISO27001-A.8.20-network-security
     - ISO27001-A.8.24-cryptography
+    - ISO27001-A.8.2-privileged-access
+    - ISO27001-A.8.5-secure-authentication
+    - ISO27001-A.8.7-malware-protection
+    - ISO27001-A.8.8-vulnerability-management
+    - ISO27001-A.5.10-acceptable-use-of-information
+    - ISO27001-A.5.11-return-of-assets
+    - ISO27001-A.5.12-classification-of-information
+    - ISO27001-A.5.13-labelling-of-information
+    - ISO27001-A.5.14-information-transfer
+    - ISO27001-A.5.20-information-security-in-supplier-agreements
+    - ISO27001-A.5.21-managing-information-security-in-ict-supply-chain
+    - ISO27001-A.5.22-monitoring-review-change-mgmt-supplier
+    - ISO27001-A.5.24-incident-management-planning
+    - ISO27001-A.5.25-assessment-of-information-security-events
+    - ISO27001-A.5.26-response-to-information-security-incidents
+    - ISO27001-A.5.27-learning-from-incidents
+    - ISO27001-A.5.28-collection-of-evidence
+    - ISO27001-A.5.29-information-security-during-disruption
+    - ISO27001-A.5.2-information-security-roles
+    - ISO27001-A.5.31-legal-statutory-regulatory
+    - ISO27001-A.5.32-intellectual-property-rights
+    - ISO27001-A.5.34-privacy-and-pii
+    - ISO27001-A.5.35-independent-review
+    - ISO27001-A.5.36-compliance-with-policies
+    - ISO27001-A.5.3-segregation-of-duties
+    - ISO27001-A.5.4-management-responsibilities
+    - ISO27001-A.5.5-contact-with-authorities
+    - ISO27001-A.5.6-contact-with-special-interest-groups
+    - ISO27001-A.5.8-information-security-in-project-management
+    - ISO27001-A.5.9-inventory-of-information-assets
+    - ISO27001-A.6.1-screening
+    - ISO27001-A.6.2-terms-and-conditions-of-employment
+    - ISO27001-A.6.4-disciplinary-process
+    - ISO27001-A.6.5-responsibilities-after-termination
+    - ISO27001-A.6.6-confidentiality-or-non-disclosure-agreements
+    - ISO27001-A.6.7-remote-working
+    - ISO27001-A.6.8-information-security-event-reporting
+    - ISO27001-A.8.10-information-deletion
+    - ISO27001-A.8.11-data-masking
+    - ISO27001-A.8.12-data-leakage-prevention
+    - ISO27001-A.8.14-redundancy-of-information-processing
+    - ISO27001-A.8.17-clock-synchronisation
+    - ISO27001-A.8.18-use-of-privileged-utility-programs
+    - ISO27001-A.8.19-installation-of-software-on-operational-systems
+    - ISO27001-A.8.1-user-endpoint-devices
+    - ISO27001-A.8.21-security-of-network-services
+    - ISO27001-A.8.22-segregation-of-networks
+    - ISO27001-A.8.23-web-filtering
+    - ISO27001-A.8.25-secure-development-life-cycle
+    - ISO27001-A.8.26-application-security-requirements
+    - ISO27001-A.8.27-secure-system-architecture
+    - ISO27001-A.8.28-secure-coding
+    - ISO27001-A.8.29-security-testing-in-development
+    - ISO27001-A.8.30-outsourced-development
+    - ISO27001-A.8.31-separation-of-environments
+    - ISO27001-A.8.32-change-management
+    - ISO27001-A.8.33-test-information
+    - ISO27001-A.8.34-protection-of-information-systems-during-audit
+    - ISO27001-A.8.3-information-access-restriction
+    - ISO27001-A.8.4-access-to-source-code
+    - ISO27001-A.8.6-capacity-management
+    - ISO27001-A.8.9-configuration-management
   evidence_sources:
-    - source: attestation
-      version: ">=v0.1.0,<v1.0.0"
     - source: aws
+      version: ">=v0.1.0,<v1.0.0"
+    - source: github
       version: ">=v0.1.0,<v1.0.0"
     - source: okta
       version: ">=v0.1.0,<v1.0.0"
-    - source: github
+    - source: attestation
       version: ">=v0.1.0,<v1.0.0"

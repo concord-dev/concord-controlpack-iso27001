@@ -1,0 +1,38 @@
+apiVersion: concord.dev/v1
+kind: Control
+
+metadata:
+  id: ISO27001-A.8.12-data-leakage-prevention
+  name: iso27001-a-8-12-data-leakage-prevention
+  title: DLP controls are deployed on systems handling sensitive information
+  framework: iso27001
+  severity: high
+  tags: []
+  owners:
+    - team: concord-dev
+
+spec:
+  description: |
+    TODO: describe what ISO27001-A.8.12-data-leakage-prevention enforces.
+
+  evidence:
+    - id: iso27001_a_8_12_data_leakage_prevention
+      source: aws
+      type: aws_resource_inventory
+      fixture: ../tests/fixtures/iso27001-a-8-12-data-leakage-prevention-pass.json
+      params:
+              service: TODO  # e.g. s3, iam, kms
+              region: us-east-1
+
+  policy:
+    engine: rego
+    package: concord.iso27001.iso27001_a_8_12_data_leakage_prevention
+    file: ../policies/iso27001-a-8-12-data-leakage-prevention.rego
+
+  remediation:
+    runbook: docs/remediation/iso27001-a-8-12-data-leakage-prevention.md
+    auto_fix: false
+    estimated_effort: 30m
+
+  status: draft
+  blocking: false

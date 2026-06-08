@@ -1,0 +1,38 @@
+apiVersion: concord.dev/v1
+kind: Control
+
+metadata:
+  id: ISO27001-A.8.22-segregation-of-networks
+  name: iso27001-a-8-22-segregation-of-networks
+  title: Networks are segregated according to trust levels
+  framework: iso27001
+  severity: medium
+  tags: []
+  owners:
+    - team: concord-dev
+
+spec:
+  description: |
+    TODO: describe what ISO27001-A.8.22-segregation-of-networks enforces.
+
+  evidence:
+    - id: iso27001_a_8_22_segregation_of_networks
+      source: aws
+      type: aws_resource_inventory
+      fixture: ../tests/fixtures/iso27001-a-8-22-segregation-of-networks-pass.json
+      params:
+              service: TODO  # e.g. s3, iam, kms
+              region: us-east-1
+
+  policy:
+    engine: rego
+    package: concord.iso27001.iso27001_a_8_22_segregation_of_networks
+    file: ../policies/iso27001-a-8-22-segregation-of-networks.rego
+
+  remediation:
+    runbook: docs/remediation/iso27001-a-8-22-segregation-of-networks.md
+    auto_fix: false
+    estimated_effort: 30m
+
+  status: draft
+  blocking: false

@@ -1,0 +1,38 @@
+apiVersion: concord.dev/v1
+kind: Control
+
+metadata:
+  id: ISO27001-A.8.14-redundancy-of-information-processing
+  name: iso27001-a-8-14-redundancy-of-information-processing
+  title: Availability is maintained via redundancy in critical components
+  framework: iso27001
+  severity: medium
+  tags: []
+  owners:
+    - team: concord-dev
+
+spec:
+  description: |
+    TODO: describe what ISO27001-A.8.14-redundancy-of-information-processing enforces.
+
+  evidence:
+    - id: iso27001_a_8_14_redundancy_of_information_processing
+      source: aws
+      type: aws_resource_inventory
+      fixture: ../tests/fixtures/iso27001-a-8-14-redundancy-of-information-processing-pass.json
+      params:
+              service: TODO  # e.g. s3, iam, kms
+              region: us-east-1
+
+  policy:
+    engine: rego
+    package: concord.iso27001.iso27001_a_8_14_redundancy_of_information_processing
+    file: ../policies/iso27001-a-8-14-redundancy-of-information-processing.rego
+
+  remediation:
+    runbook: docs/remediation/iso27001-a-8-14-redundancy-of-information-processing.md
+    auto_fix: false
+    estimated_effort: 30m
+
+  status: draft
+  blocking: false

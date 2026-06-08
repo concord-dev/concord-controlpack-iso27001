@@ -1,0 +1,8 @@
+{
+  "iso27001_a_8_3_information_access_restriction": {
+    "fetched_at": "2026-01-01T00:00:00Z",
+    "resources": [
+      { "arn": "arn:aws:s3:::acme-logs", "compliant": true, "reason": "" }
+    ]
+  }
+}

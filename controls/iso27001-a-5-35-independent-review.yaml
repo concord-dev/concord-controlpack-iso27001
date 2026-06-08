@@ -1,0 +1,40 @@
+apiVersion: concord.dev/v1
+kind: Control
+
+metadata:
+  id: ISO27001-A.5.35-independent-review
+  name: iso27001-a-5-35-independent-review
+  title: Independent reviews of information security are conducted
+  framework: iso27001
+  severity: medium
+  tags: []
+  owners:
+    - team: concord-dev
+
+spec:
+  description: |
+    TODO: describe what ISO27001-A.5.35-independent-review enforces.
+
+  evidence:
+    - id: iso27001_a_5_35_independent_review
+      source: attestation
+      type: policy_attestation
+      fixture: ../tests/fixtures/iso27001-a-5-35-independent-review-pass.json
+      params:
+              schema: TODO  # e.g. ropa-v1, dpia-v1, dpa-v1, ism-v1
+              signers:
+                - dpo@acme.com
+              max_age_days: 365
+
+  policy:
+    engine: rego
+    package: concord.iso27001.iso27001_a_5_35_independent_review
+    file: ../policies/iso27001-a-5-35-independent-review.rego
+
+  remediation:
+    runbook: docs/remediation/iso27001-a-5-35-independent-review.md
+    auto_fix: false
+    estimated_effort: 30m
+
+  status: draft
+  blocking: false

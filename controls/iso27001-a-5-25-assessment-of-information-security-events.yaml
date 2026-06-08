@@ -1,0 +1,40 @@
+apiVersion: concord.dev/v1
+kind: Control
+
+metadata:
+  id: ISO27001-A.5.25-assessment-of-information-security-events
+  name: iso27001-a-5-25-assessment-of-information-security-events
+  title: Information security events are assessed and classified
+  framework: iso27001
+  severity: medium
+  tags: []
+  owners:
+    - team: concord-dev
+
+spec:
+  description: |
+    TODO: describe what ISO27001-A.5.25-assessment-of-information-security-events enforces.
+
+  evidence:
+    - id: iso27001_a_5_25_assessment_of_information_security_events
+      source: attestation
+      type: policy_attestation
+      fixture: ../tests/fixtures/iso27001-a-5-25-assessment-of-information-security-events-pass.json
+      params:
+              schema: TODO  # e.g. ropa-v1, dpia-v1, dpa-v1, ism-v1
+              signers:
+                - dpo@acme.com
+              max_age_days: 365
+
+  policy:
+    engine: rego
+    package: concord.iso27001.iso27001_a_5_25_assessment_of_information_security_events
+    file: ../policies/iso27001-a-5-25-assessment-of-information-security-events.rego
+
+  remediation:
+    runbook: docs/remediation/iso27001-a-5-25-assessment-of-information-security-events.md
+    auto_fix: false
+    estimated_effort: 30m
+
+  status: draft
+  blocking: false

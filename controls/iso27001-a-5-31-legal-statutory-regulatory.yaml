@@ -1,0 +1,40 @@
+apiVersion: concord.dev/v1
+kind: Control
+
+metadata:
+  id: ISO27001-A.5.31-legal-statutory-regulatory
+  name: iso27001-a-5-31-legal-statutory-regulatory
+  title: Legal, statutory, and regulatory requirements are identified and met
+  framework: iso27001
+  severity: high
+  tags: []
+  owners:
+    - team: concord-dev
+
+spec:
+  description: |
+    TODO: describe what ISO27001-A.5.31-legal-statutory-regulatory enforces.
+
+  evidence:
+    - id: iso27001_a_5_31_legal_statutory_regulatory
+      source: attestation
+      type: policy_attestation
+      fixture: ../tests/fixtures/iso27001-a-5-31-legal-statutory-regulatory-pass.json
+      params:
+              schema: TODO  # e.g. ropa-v1, dpia-v1, dpa-v1, ism-v1
+              signers:
+                - dpo@acme.com
+              max_age_days: 365
+
+  policy:
+    engine: rego
+    package: concord.iso27001.iso27001_a_5_31_legal_statutory_regulatory
+    file: ../policies/iso27001-a-5-31-legal-statutory-regulatory.rego
+
+  remediation:
+    runbook: docs/remediation/iso27001-a-5-31-legal-statutory-regulatory.md
+    auto_fix: false
+    estimated_effort: 30m
+
+  status: draft
+  blocking: false

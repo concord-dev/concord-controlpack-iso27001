@@ -1,0 +1,38 @@
+apiVersion: concord.dev/v1
+kind: Control
+
+metadata:
+  id: ISO27001-A.8.21-security-of-network-services
+  name: iso27001-a-8-21-security-of-network-services
+  title: Network services are identified, monitored, and protected
+  framework: iso27001
+  severity: medium
+  tags: []
+  owners:
+    - team: concord-dev
+
+spec:
+  description: |
+    TODO: describe what ISO27001-A.8.21-security-of-network-services enforces.
+
+  evidence:
+    - id: iso27001_a_8_21_security_of_network_services
+      source: aws
+      type: aws_resource_inventory
+      fixture: ../tests/fixtures/iso27001-a-8-21-security-of-network-services-pass.json
+      params:
+              service: TODO  # e.g. s3, iam, kms
+              region: us-east-1
+
+  policy:
+    engine: rego
+    package: concord.iso27001.iso27001_a_8_21_security_of_network_services
+    file: ../policies/iso27001-a-8-21-security-of-network-services.rego
+
+  remediation:
+    runbook: docs/remediation/iso27001-a-8-21-security-of-network-services.md
+    auto_fix: false
+    estimated_effort: 30m
+
+  status: draft
+  blocking: false
