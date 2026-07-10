@@ -1,11 +1,10 @@
 {
-  "iso27001_a_8_6_capacity_management": {
-    "fetched_at": "2026-01-01T00:00:00Z",
-    "version": "1",
-    "owner": "dpo@acme.com",
-    "signers": ["dpo@acme.com"],
-    "last_review_at": "2026-01-01T00:00:00Z",
-    "expires_at": "2027-01-01T00:00:00Z",
-    "attested_fields": ["scope", "lawful_basis", "retention"]
+  "kind": "capacity_management",
+  "attested_fields": {
+    "monitoring_approach": "documented for capacity_management",
+    "thresholds": "documented for capacity_management",
+    "scaling_process": "documented for capacity_management",
+    "last_reviewed_at": "2026-06-01T00:00:00Z",
+    "next_review_due": "2099-12-31T23:59:59Z"
   }
 }

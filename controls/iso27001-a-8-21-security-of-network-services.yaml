@@ -6,33 +6,44 @@ metadata:
   name: iso27001-a-8-21-security-of-network-services
   title: Network services are identified, monitored, and protected
   framework: iso27001
-  severity: medium
-  tags: []
+  category: Technological Controls
+  severity: high
+  tags:
+    - iso27001
   owners:
-    - team: concord-dev
+    - team: security
 
 spec:
   description: |
-    TODO: describe what ISO27001-A.8.21-security-of-network-services enforces.
+    ISO/IEC 27001:2022 A.8.21 requires security mechanisms, service levels, and requirements of network services to be identified, implemented, and monitored. Concord verifies a cosigned attestation of the network-service inventory, the security mechanisms, and monitoring.
+
+  rationale: |
+    Unmonitored network services are blind spots where compromise spreads laterally undetected.
 
   evidence:
-    - id: iso27001_a_8_21_security_of_network_services
-      source: aws
-      type: aws_resource_inventory
+    - id: attestation
+      source: attestation
+      type: policy_attestation
       fixture: ../tests/fixtures/iso27001-a-8-21-security-of-network-services-pass.json
       params:
-              service: TODO  # e.g. s3, iam, kms
-              region: us-east-1
+        kind: network_services_security
 
   policy:
     engine: rego
-    package: concord.iso27001.iso27001_a_8_21_security_of_network_services
+    package: concord.iso27001.a_8_21_security_of_network_services
     file: ../policies/iso27001-a-8-21-security-of-network-services.rego
 
   remediation:
     runbook: docs/remediation/iso27001-a-8-21-security-of-network-services.md
     auto_fix: false
-    estimated_effort: 30m
+    estimated_effort: 2d
 
-  status: draft
-  blocking: false
+  mappings:
+    iso27001:
+      - "A.8.21"
+    nist_800_53:
+      - "SC-7"
+      - "CA-3"
+
+  status: stable
+  blocking: true

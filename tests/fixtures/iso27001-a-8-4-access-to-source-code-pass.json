@@ -1,8 +1,10 @@
 {
-  "iso27001_a_8_4_access_to_source_code": {
-    "fetched_at": "2026-01-01T00:00:00Z",
-    "repos": [
-      { "full_name": "acme/api", "protected_default_branch": true, "required_status_checks": true }
-    ]
+  "kind": "source_code_access",
+  "attested_fields": {
+    "access_restrictions": "documented for source_code_access",
+    "repository_controls": "documented for source_code_access",
+    "review_process": "documented for source_code_access",
+    "last_reviewed_at": "2026-06-01T00:00:00Z",
+    "next_review_due": "2099-12-31T23:59:59Z"
   }
 }

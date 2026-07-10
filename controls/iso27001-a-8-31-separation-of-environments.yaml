@@ -6,33 +6,44 @@ metadata:
   name: iso27001-a-8-31-separation-of-environments
   title: Development, test, and production environments are separated
   framework: iso27001
-  severity: medium
-  tags: []
+  category: Technological Controls
+  severity: high
+  tags:
+    - iso27001
   owners:
-    - team: concord-dev
+    - team: security
 
 spec:
   description: |
-    TODO: describe what ISO27001-A.8.31-separation-of-environments enforces.
+    ISO/IEC 27001:2022 A.8.31 requires development, testing, and production environments to be separated and secured. Concord verifies a cosigned attestation of the separation method, the environments in scope, and the per-environment access controls.
+
+  rationale: |
+    Mixing environments lets test mistakes and lower-trust access reach production data and systems.
 
   evidence:
-    - id: iso27001_a_8_31_separation_of_environments
-      source: aws
-      type: aws_resource_inventory
+    - id: attestation
+      source: attestation
+      type: policy_attestation
       fixture: ../tests/fixtures/iso27001-a-8-31-separation-of-environments-pass.json
       params:
-              service: TODO  # e.g. s3, iam, kms
-              region: us-east-1
+        kind: environment_separation
 
   policy:
     engine: rego
-    package: concord.iso27001.iso27001_a_8_31_separation_of_environments
+    package: concord.iso27001.a_8_31_separation_of_environments
     file: ../policies/iso27001-a-8-31-separation-of-environments.rego
 
   remediation:
     runbook: docs/remediation/iso27001-a-8-31-separation-of-environments.md
     auto_fix: false
-    estimated_effort: 30m
+    estimated_effort: 2d
 
-  status: draft
-  blocking: false
+  mappings:
+    iso27001:
+      - "A.8.31"
+    nist_800_53:
+      - "CM-4"
+      - "SC-7"
+
+  status: stable
+  blocking: true

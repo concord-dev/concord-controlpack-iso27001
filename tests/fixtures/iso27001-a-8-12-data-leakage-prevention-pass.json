@@ -1,8 +1,10 @@
 {
-  "iso27001_a_8_12_data_leakage_prevention": {
-    "fetched_at": "2026-01-01T00:00:00Z",
-    "resources": [
-      { "arn": "arn:aws:s3:::acme-logs", "compliant": true, "reason": "" }
-    ]
+  "kind": "data_leakage_prevention",
+  "attested_fields": {
+    "dlp_controls": "documented for data_leakage_prevention",
+    "monitored_channels": "documented for data_leakage_prevention",
+    "coverage": "documented for data_leakage_prevention",
+    "last_reviewed_at": "2026-06-01T00:00:00Z",
+    "next_review_due": "2099-12-31T23:59:59Z"
   }
 }

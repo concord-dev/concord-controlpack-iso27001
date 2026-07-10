@@ -1,8 +1,10 @@
 {
-  "iso27001_a_8_14_redundancy_of_information_processing": {
-    "fetched_at": "2026-01-01T00:00:00Z",
-    "resources": [
-      { "arn": "arn:aws:s3:::acme-logs", "compliant": true, "reason": "" }
-    ]
+  "kind": "redundancy",
+  "attested_fields": {
+    "redundant_components": "documented for redundancy",
+    "availability_targets": "documented for redundancy",
+    "failover_testing": "documented for redundancy",
+    "last_reviewed_at": "2026-06-01T00:00:00Z",
+    "next_review_due": "2099-12-31T23:59:59Z"
   }
 }

@@ -6,33 +6,44 @@ metadata:
   name: iso27001-a-8-1-user-endpoint-devices
   title: User endpoint devices are inventoried and managed via MDM
   framework: iso27001
-  severity: medium
-  tags: []
+  category: Technological Controls
+  severity: high
+  tags:
+    - iso27001
   owners:
-    - team: concord-dev
+    - team: security
 
 spec:
   description: |
-    TODO: describe what ISO27001-A.8.1-user-endpoint-devices enforces.
+    ISO/IEC 27001:2022 A.8.1 requires information on user endpoint devices to be protected. Concord verifies a cosigned attestation of the device inventory, MDM enforcement, and the endpoint disk-encryption requirement.
+
+  rationale: |
+    Unmanaged, unencrypted endpoints are a leading cause of ePHI/PII loss; MDM and encryption are the baseline endpoint controls.
 
   evidence:
-    - id: iso27001_a_8_1_user_endpoint_devices
-      source: aws
-      type: aws_resource_inventory
+    - id: attestation
+      source: attestation
+      type: policy_attestation
       fixture: ../tests/fixtures/iso27001-a-8-1-user-endpoint-devices-pass.json
       params:
-              service: TODO  # e.g. s3, iam, kms
-              region: us-east-1
+        kind: endpoint_management
 
   policy:
     engine: rego
-    package: concord.iso27001.iso27001_a_8_1_user_endpoint_devices
+    package: concord.iso27001.a_8_1_user_endpoint_devices
     file: ../policies/iso27001-a-8-1-user-endpoint-devices.rego
 
   remediation:
     runbook: docs/remediation/iso27001-a-8-1-user-endpoint-devices.md
     auto_fix: false
-    estimated_effort: 30m
+    estimated_effort: 2d
 
-  status: draft
-  blocking: false
+  mappings:
+    iso27001:
+      - "A.8.1"
+    nist_800_53:
+      - "CM-8"
+      - "AC-19"
+
+  status: stable
+  blocking: true

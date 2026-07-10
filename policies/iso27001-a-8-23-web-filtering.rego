@@ -1,16 +1,37 @@
-package concord.iso27001.iso27001_a_8_23_web_filtering
+package concord.iso27001.a_8_23_web_filtering
 
 import rego.v1
-import data.concord.lib.collection
-import data.concord.lib.evidence
+
+# ISO/IEC 27001:2022 A.8.23 — Web filtering limits access to malicious sites
+# Structured attestation (source: attestation / policy_attestation).
+
+required_fields := {"filtering_solution", "blocked_categories", "coverage", "last_reviewed_at", "next_review_due"}
 
 deny contains msg if {
-	not evidence.present(input, "iso27001_a_8_23_web_filtering")
-	msg := "ISO27001-A.8.23-web-filtering: aws evidence missing"
+	not input.attestation
+	msg := "no web_filtering attestation collected"
 }
 
 deny contains msg if {
-	some r in input.iso27001_a_8_23_web_filtering.resources
-	not r.compliant
-	msg := sprintf("ISO27001-A.8.23-web-filtering: resource %q is non-compliant (reason: %s)", [r.arn, r.reason])
+	input.attestation.kind != "web_filtering"
+	msg := sprintf("attestation kind is %q, expected \"web_filtering\"", [input.attestation.kind])
+}
+
+deny contains msg if {
+	some f in required_fields
+	not input.attestation.attested_fields[f]
+	msg := sprintf("web_filtering attestation missing required field: %s", [f])
+}
+
+deny contains msg if {
+	review_due := time.parse_rfc3339_ns(input.attestation.attested_fields.next_review_due)
+	review_due < time.now_ns()
+	msg := sprintf("web_filtering review is overdue (next_review_due=%s)", [input.attestation.attested_fields.next_review_due])
+}
+
+warn contains msg if {
+	review_due := time.parse_rfc3339_ns(input.attestation.attested_fields.next_review_due)
+	review_due < (time.now_ns() + 30 * 24 * 3600 * 1000 * 1000 * 1000)
+	review_due >= time.now_ns()
+	msg := sprintf("web_filtering review due within 30 days (%s)", [input.attestation.attested_fields.next_review_due])
 }

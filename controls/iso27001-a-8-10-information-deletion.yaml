@@ -6,35 +6,44 @@ metadata:
   name: iso27001-a-8-10-information-deletion
   title: Information is deleted when no longer required
   framework: iso27001
+  category: Technological Controls
   severity: medium
-  tags: []
+  tags:
+    - iso27001
   owners:
-    - team: concord-dev
+    - team: security
 
 spec:
   description: |
-    TODO: describe what ISO27001-A.8.10-information-deletion enforces.
+    ISO/IEC 27001:2022 A.8.10 requires information stored in systems, devices, or any other storage media to be deleted when no longer required. Concord verifies a cosigned attestation of the deletion policy, the deletion methods, and alignment with retention schedules.
+
+  rationale: |
+    Over-retained data expands breach blast radius and violates data-minimisation obligations.
 
   evidence:
-    - id: iso27001_a_8_10_information_deletion
+    - id: attestation
       source: attestation
       type: policy_attestation
       fixture: ../tests/fixtures/iso27001-a-8-10-information-deletion-pass.json
       params:
-              schema: TODO  # e.g. ropa-v1, dpia-v1, dpa-v1, ism-v1
-              signers:
-                - dpo@acme.com
-              max_age_days: 365
+        kind: information_deletion
 
   policy:
     engine: rego
-    package: concord.iso27001.iso27001_a_8_10_information_deletion
+    package: concord.iso27001.a_8_10_information_deletion
     file: ../policies/iso27001-a-8-10-information-deletion.rego
 
   remediation:
     runbook: docs/remediation/iso27001-a-8-10-information-deletion.md
     auto_fix: false
-    estimated_effort: 30m
+    estimated_effort: 2d
 
-  status: draft
-  blocking: false
+  mappings:
+    iso27001:
+      - "A.8.10"
+    nist_800_53:
+      - "SI-12"
+      - "MP-6"
+
+  status: stable
+  blocking: true

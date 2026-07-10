@@ -1,20 +1,37 @@
-package concord.iso27001.iso27001_a_8_25_secure_development_life_cycle
+package concord.iso27001.a_8_25_secure_development_life_cycle
 
 import rego.v1
-import data.concord.lib.attestation
-import data.concord.lib.evidence
+
+# ISO/IEC 27001:2022 A.8.25 — SDLC includes security activities at each phase
+# Structured attestation (source: attestation / policy_attestation).
+
+required_fields := {"sdlc_phases", "security_gates", "tooling", "last_reviewed_at", "next_review_due"}
 
 deny contains msg if {
-	not evidence.present(input, "iso27001_a_8_25_secure_development_life_cycle")
-	msg := "ISO27001-A.8.25-secure-development-life-cycle: no signed attestation submitted"
+	not input.attestation
+	msg := "no secure_sdlc attestation collected"
 }
 
 deny contains msg if {
-	not attestation.not_expired(input.iso27001_a_8_25_secure_development_life_cycle)
-	msg := sprintf("ISO27001-A.8.25-secure-development-life-cycle: attestation expired (expires_at=%s)", [input.iso27001_a_8_25_secure_development_life_cycle.expires_at])
+	input.attestation.kind != "secure_sdlc"
+	msg := sprintf("attestation kind is %q, expected \"secure_sdlc\"", [input.attestation.kind])
 }
 
 deny contains msg if {
-	not attestation.fresh(input.iso27001_a_8_25_secure_development_life_cycle, 365)
-	msg := sprintf("ISO27001-A.8.25-secure-development-life-cycle: attestation not reviewed in 365 days (last_review_at=%s)", [input.iso27001_a_8_25_secure_development_life_cycle.last_review_at])
+	some f in required_fields
+	not input.attestation.attested_fields[f]
+	msg := sprintf("secure_sdlc attestation missing required field: %s", [f])
+}
+
+deny contains msg if {
+	review_due := time.parse_rfc3339_ns(input.attestation.attested_fields.next_review_due)
+	review_due < time.now_ns()
+	msg := sprintf("secure_sdlc review is overdue (next_review_due=%s)", [input.attestation.attested_fields.next_review_due])
+}
+
+warn contains msg if {
+	review_due := time.parse_rfc3339_ns(input.attestation.attested_fields.next_review_due)
+	review_due < (time.now_ns() + 30 * 24 * 3600 * 1000 * 1000 * 1000)
+	review_due >= time.now_ns()
+	msg := sprintf("secure_sdlc review due within 30 days (%s)", [input.attestation.attested_fields.next_review_due])
 }

@@ -1,8 +1,9 @@
 {
-  "iso27001_a_8_3_information_access_restriction": {
-    "fetched_at": "2026-01-01T00:00:00Z",
-    "resources": [
-      { "arn": "arn:aws:s3:::acme-logs", "compliant": false, "reason": "public access block disabled" }
-    ]
+  "kind": "access_restriction",
+  "attested_fields": {
+    "restriction_mechanisms": "documented for access_restriction",
+    "review_process": "documented for access_restriction",
+    "last_reviewed_at": "2026-06-01T00:00:00Z",
+    "next_review_due": "2099-12-31T23:59:59Z"
   }
 }

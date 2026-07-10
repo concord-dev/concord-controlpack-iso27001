@@ -1,20 +1,37 @@
-package concord.iso27001.iso27001_a_8_30_outsourced_development
+package concord.iso27001.a_8_30_outsourced_development
 
 import rego.v1
-import data.concord.lib.attestation
-import data.concord.lib.evidence
+
+# ISO/IEC 27001:2022 A.8.30 — Outsourced development is supervised and monitored
+# Structured attestation (source: attestation / policy_attestation).
+
+required_fields := {"supervision_process", "security_requirements", "monitoring", "last_reviewed_at", "next_review_due"}
 
 deny contains msg if {
-	not evidence.present(input, "iso27001_a_8_30_outsourced_development")
-	msg := "ISO27001-A.8.30-outsourced-development: no signed attestation submitted"
+	not input.attestation
+	msg := "no outsourced_development attestation collected"
 }
 
 deny contains msg if {
-	not attestation.not_expired(input.iso27001_a_8_30_outsourced_development)
-	msg := sprintf("ISO27001-A.8.30-outsourced-development: attestation expired (expires_at=%s)", [input.iso27001_a_8_30_outsourced_development.expires_at])
+	input.attestation.kind != "outsourced_development"
+	msg := sprintf("attestation kind is %q, expected \"outsourced_development\"", [input.attestation.kind])
 }
 
 deny contains msg if {
-	not attestation.fresh(input.iso27001_a_8_30_outsourced_development, 365)
-	msg := sprintf("ISO27001-A.8.30-outsourced-development: attestation not reviewed in 365 days (last_review_at=%s)", [input.iso27001_a_8_30_outsourced_development.last_review_at])
+	some f in required_fields
+	not input.attestation.attested_fields[f]
+	msg := sprintf("outsourced_development attestation missing required field: %s", [f])
+}
+
+deny contains msg if {
+	review_due := time.parse_rfc3339_ns(input.attestation.attested_fields.next_review_due)
+	review_due < time.now_ns()
+	msg := sprintf("outsourced_development review is overdue (next_review_due=%s)", [input.attestation.attested_fields.next_review_due])
+}
+
+warn contains msg if {
+	review_due := time.parse_rfc3339_ns(input.attestation.attested_fields.next_review_due)
+	review_due < (time.now_ns() + 30 * 24 * 3600 * 1000 * 1000 * 1000)
+	review_due >= time.now_ns()
+	msg := sprintf("outsourced_development review due within 30 days (%s)", [input.attestation.attested_fields.next_review_due])
 }

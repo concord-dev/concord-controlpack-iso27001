@@ -6,33 +6,44 @@ metadata:
   name: iso27001-a-8-14-redundancy-of-information-processing
   title: Availability is maintained via redundancy in critical components
   framework: iso27001
+  category: Technological Controls
   severity: medium
-  tags: []
+  tags:
+    - iso27001
   owners:
-    - team: concord-dev
+    - team: security
 
 spec:
   description: |
-    TODO: describe what ISO27001-A.8.14-redundancy-of-information-processing enforces.
+    ISO/IEC 27001:2022 A.8.14 requires information processing facilities to be implemented with redundancy sufficient to meet availability requirements. Concord verifies a cosigned attestation of the redundant components, the availability targets, and failover testing.
+
+  rationale: |
+    Single points of failure turn routine faults into outages; tested redundancy is what meets availability commitments.
 
   evidence:
-    - id: iso27001_a_8_14_redundancy_of_information_processing
-      source: aws
-      type: aws_resource_inventory
+    - id: attestation
+      source: attestation
+      type: policy_attestation
       fixture: ../tests/fixtures/iso27001-a-8-14-redundancy-of-information-processing-pass.json
       params:
-              service: TODO  # e.g. s3, iam, kms
-              region: us-east-1
+        kind: redundancy
 
   policy:
     engine: rego
-    package: concord.iso27001.iso27001_a_8_14_redundancy_of_information_processing
+    package: concord.iso27001.a_8_14_redundancy_of_information_processing
     file: ../policies/iso27001-a-8-14-redundancy-of-information-processing.rego
 
   remediation:
     runbook: docs/remediation/iso27001-a-8-14-redundancy-of-information-processing.md
     auto_fix: false
-    estimated_effort: 30m
+    estimated_effort: 2d
 
-  status: draft
-  blocking: false
+  mappings:
+    iso27001:
+      - "A.8.14"
+    nist_800_53:
+      - "CP-2"
+      - "SC-6"
+
+  status: stable
+  blocking: true

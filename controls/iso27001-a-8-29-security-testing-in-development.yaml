@@ -6,35 +6,43 @@ metadata:
   name: iso27001-a-8-29-security-testing-in-development
   title: Security testing is integrated into the development process
   framework: iso27001
-  severity: medium
-  tags: []
+  category: Technological Controls
+  severity: high
+  tags:
+    - iso27001
   owners:
-    - team: concord-dev
+    - team: security
 
 spec:
   description: |
-    TODO: describe what ISO27001-A.8.29-security-testing-in-development enforces.
+    ISO/IEC 27001:2022 A.8.29 requires security testing processes to be defined and implemented in the development lifecycle. Concord verifies a cosigned attestation of the testing types (SAST/DAST/SCA), the integration points, and the gating criteria.
+
+  rationale: |
+    Security testing gates are what stop known-vulnerable builds from reaching production.
 
   evidence:
-    - id: iso27001_a_8_29_security_testing_in_development
+    - id: attestation
       source: attestation
       type: policy_attestation
       fixture: ../tests/fixtures/iso27001-a-8-29-security-testing-in-development-pass.json
       params:
-              schema: TODO  # e.g. ropa-v1, dpia-v1, dpa-v1, ism-v1
-              signers:
-                - dpo@acme.com
-              max_age_days: 365
+        kind: security_testing
 
   policy:
     engine: rego
-    package: concord.iso27001.iso27001_a_8_29_security_testing_in_development
+    package: concord.iso27001.a_8_29_security_testing_in_development
     file: ../policies/iso27001-a-8-29-security-testing-in-development.rego
 
   remediation:
     runbook: docs/remediation/iso27001-a-8-29-security-testing-in-development.md
     auto_fix: false
-    estimated_effort: 30m
+    estimated_effort: 2d
 
-  status: draft
-  blocking: false
+  mappings:
+    iso27001:
+      - "A.8.29"
+    nist_800_53:
+      - "SA-11"
+
+  status: stable
+  blocking: true

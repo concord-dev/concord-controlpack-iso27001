@@ -1,8 +1,9 @@
 {
-  "iso27001_a_8_21_security_of_network_services": {
-    "fetched_at": "2026-01-01T00:00:00Z",
-    "resources": [
-      { "arn": "arn:aws:s3:::acme-logs", "compliant": false, "reason": "public access block disabled" }
-    ]
+  "kind": "network_services_security",
+  "attested_fields": {
+    "security_mechanisms": "documented for network_services_security",
+    "monitoring": "documented for network_services_security",
+    "last_reviewed_at": "2026-06-01T00:00:00Z",
+    "next_review_due": "2099-12-31T23:59:59Z"
   }
 }

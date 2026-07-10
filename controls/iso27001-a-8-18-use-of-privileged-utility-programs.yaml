@@ -6,35 +6,44 @@ metadata:
   name: iso27001-a-8-18-use-of-privileged-utility-programs
   title: Privileged utility programs are restricted and tightly controlled
   framework: iso27001
-  severity: medium
-  tags: []
+  category: Technological Controls
+  severity: high
+  tags:
+    - iso27001
   owners:
-    - team: concord-dev
+    - team: security
 
 spec:
   description: |
-    TODO: describe what ISO27001-A.8.18-use-of-privileged-utility-programs enforces.
+    ISO/IEC 27001:2022 A.8.18 requires the use of utility programs capable of overriding system and application controls to be restricted and tightly controlled. Concord verifies a cosigned attestation of the restricted utilities, the authorization process, and monitoring of their use.
+
+  rationale: |
+    Privileged utilities can bypass every application-layer control; restricting and logging them is essential.
 
   evidence:
-    - id: iso27001_a_8_18_use_of_privileged_utility_programs
+    - id: attestation
       source: attestation
       type: policy_attestation
       fixture: ../tests/fixtures/iso27001-a-8-18-use-of-privileged-utility-programs-pass.json
       params:
-              schema: TODO  # e.g. ropa-v1, dpia-v1, dpa-v1, ism-v1
-              signers:
-                - dpo@acme.com
-              max_age_days: 365
+        kind: privileged_utilities
 
   policy:
     engine: rego
-    package: concord.iso27001.iso27001_a_8_18_use_of_privileged_utility_programs
+    package: concord.iso27001.a_8_18_use_of_privileged_utility_programs
     file: ../policies/iso27001-a-8-18-use-of-privileged-utility-programs.rego
 
   remediation:
     runbook: docs/remediation/iso27001-a-8-18-use-of-privileged-utility-programs.md
     auto_fix: false
-    estimated_effort: 30m
+    estimated_effort: 2d
 
-  status: draft
-  blocking: false
+  mappings:
+    iso27001:
+      - "A.8.18"
+    nist_800_53:
+      - "AC-6"
+      - "CM-7"
+
+  status: stable
+  blocking: true

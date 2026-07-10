@@ -6,35 +6,44 @@ metadata:
   name: iso27001-a-8-25-secure-development-life-cycle
   title: SDLC includes security activities at each phase
   framework: iso27001
-  severity: medium
-  tags: []
+  category: Technological Controls
+  severity: high
+  tags:
+    - iso27001
   owners:
-    - team: concord-dev
+    - team: security
 
 spec:
   description: |
-    TODO: describe what ISO27001-A.8.25-secure-development-life-cycle enforces.
+    ISO/IEC 27001:2022 A.8.25 requires rules for the secure development of software and systems to be established and applied. Concord verifies a cosigned attestation of the SDLC phases, the per-phase security gates, and the supporting tooling.
+
+  rationale: |
+    Security built into each SDLC phase is far cheaper and stronger than remediation after release.
 
   evidence:
-    - id: iso27001_a_8_25_secure_development_life_cycle
+    - id: attestation
       source: attestation
       type: policy_attestation
       fixture: ../tests/fixtures/iso27001-a-8-25-secure-development-life-cycle-pass.json
       params:
-              schema: TODO  # e.g. ropa-v1, dpia-v1, dpa-v1, ism-v1
-              signers:
-                - dpo@acme.com
-              max_age_days: 365
+        kind: secure_sdlc
 
   policy:
     engine: rego
-    package: concord.iso27001.iso27001_a_8_25_secure_development_life_cycle
+    package: concord.iso27001.a_8_25_secure_development_life_cycle
     file: ../policies/iso27001-a-8-25-secure-development-life-cycle.rego
 
   remediation:
     runbook: docs/remediation/iso27001-a-8-25-secure-development-life-cycle.md
     auto_fix: false
-    estimated_effort: 30m
+    estimated_effort: 2d
 
-  status: draft
-  blocking: false
+  mappings:
+    iso27001:
+      - "A.8.25"
+    nist_800_53:
+      - "SA-3"
+      - "SA-15"
+
+  status: stable
+  blocking: true

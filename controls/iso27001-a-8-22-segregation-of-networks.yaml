@@ -6,33 +6,43 @@ metadata:
   name: iso27001-a-8-22-segregation-of-networks
   title: Networks are segregated according to trust levels
   framework: iso27001
-  severity: medium
-  tags: []
+  category: Technological Controls
+  severity: high
+  tags:
+    - iso27001
   owners:
-    - team: concord-dev
+    - team: security
 
 spec:
   description: |
-    TODO: describe what ISO27001-A.8.22-segregation-of-networks enforces.
+    ISO/IEC 27001:2022 A.8.22 requires groups of information services, users, and systems to be segregated in the organization's networks. Concord verifies a cosigned attestation of the segmentation design, the trust zones, and how segregation is enforced.
+
+  rationale: |
+    Flat networks let one compromised host reach everything; segmentation contains lateral movement.
 
   evidence:
-    - id: iso27001_a_8_22_segregation_of_networks
-      source: aws
-      type: aws_resource_inventory
+    - id: attestation
+      source: attestation
+      type: policy_attestation
       fixture: ../tests/fixtures/iso27001-a-8-22-segregation-of-networks-pass.json
       params:
-              service: TODO  # e.g. s3, iam, kms
-              region: us-east-1
+        kind: network_segregation
 
   policy:
     engine: rego
-    package: concord.iso27001.iso27001_a_8_22_segregation_of_networks
+    package: concord.iso27001.a_8_22_segregation_of_networks
     file: ../policies/iso27001-a-8-22-segregation-of-networks.rego
 
   remediation:
     runbook: docs/remediation/iso27001-a-8-22-segregation-of-networks.md
     auto_fix: false
-    estimated_effort: 30m
+    estimated_effort: 2d
 
-  status: draft
-  blocking: false
+  mappings:
+    iso27001:
+      - "A.8.22"
+    nist_800_53:
+      - "SC-7"
+
+  status: stable
+  blocking: true

@@ -1,20 +1,37 @@
-package concord.iso27001.iso27001_a_8_28_secure_coding
+package concord.iso27001.a_8_28_secure_coding
 
 import rego.v1
-import data.concord.lib.attestation
-import data.concord.lib.evidence
+
+# ISO/IEC 27001:2022 A.8.28 — Secure coding principles are applied during development
+# Structured attestation (source: attestation / policy_attestation).
+
+required_fields := {"coding_standards", "sast_tooling", "developer_training", "last_reviewed_at", "next_review_due"}
 
 deny contains msg if {
-	not evidence.present(input, "iso27001_a_8_28_secure_coding")
-	msg := "ISO27001-A.8.28-secure-coding: no signed attestation submitted"
+	not input.attestation
+	msg := "no secure_coding attestation collected"
 }
 
 deny contains msg if {
-	not attestation.not_expired(input.iso27001_a_8_28_secure_coding)
-	msg := sprintf("ISO27001-A.8.28-secure-coding: attestation expired (expires_at=%s)", [input.iso27001_a_8_28_secure_coding.expires_at])
+	input.attestation.kind != "secure_coding"
+	msg := sprintf("attestation kind is %q, expected \"secure_coding\"", [input.attestation.kind])
 }
 
 deny contains msg if {
-	not attestation.fresh(input.iso27001_a_8_28_secure_coding, 365)
-	msg := sprintf("ISO27001-A.8.28-secure-coding: attestation not reviewed in 365 days (last_review_at=%s)", [input.iso27001_a_8_28_secure_coding.last_review_at])
+	some f in required_fields
+	not input.attestation.attested_fields[f]
+	msg := sprintf("secure_coding attestation missing required field: %s", [f])
+}
+
+deny contains msg if {
+	review_due := time.parse_rfc3339_ns(input.attestation.attested_fields.next_review_due)
+	review_due < time.now_ns()
+	msg := sprintf("secure_coding review is overdue (next_review_due=%s)", [input.attestation.attested_fields.next_review_due])
+}
+
+warn contains msg if {
+	review_due := time.parse_rfc3339_ns(input.attestation.attested_fields.next_review_due)
+	review_due < (time.now_ns() + 30 * 24 * 3600 * 1000 * 1000 * 1000)
+	review_due >= time.now_ns()
+	msg := sprintf("secure_coding review due within 30 days (%s)", [input.attestation.attested_fields.next_review_due])
 }

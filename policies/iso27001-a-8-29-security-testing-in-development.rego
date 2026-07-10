@@ -1,20 +1,37 @@
-package concord.iso27001.iso27001_a_8_29_security_testing_in_development
+package concord.iso27001.a_8_29_security_testing_in_development
 
 import rego.v1
-import data.concord.lib.attestation
-import data.concord.lib.evidence
+
+# ISO/IEC 27001:2022 A.8.29 — Security testing is integrated into the development process
+# Structured attestation (source: attestation / policy_attestation).
+
+required_fields := {"testing_types", "integration_points", "gating_criteria", "last_reviewed_at", "next_review_due"}
 
 deny contains msg if {
-	not evidence.present(input, "iso27001_a_8_29_security_testing_in_development")
-	msg := "ISO27001-A.8.29-security-testing-in-development: no signed attestation submitted"
+	not input.attestation
+	msg := "no security_testing attestation collected"
 }
 
 deny contains msg if {
-	not attestation.not_expired(input.iso27001_a_8_29_security_testing_in_development)
-	msg := sprintf("ISO27001-A.8.29-security-testing-in-development: attestation expired (expires_at=%s)", [input.iso27001_a_8_29_security_testing_in_development.expires_at])
+	input.attestation.kind != "security_testing"
+	msg := sprintf("attestation kind is %q, expected \"security_testing\"", [input.attestation.kind])
 }
 
 deny contains msg if {
-	not attestation.fresh(input.iso27001_a_8_29_security_testing_in_development, 365)
-	msg := sprintf("ISO27001-A.8.29-security-testing-in-development: attestation not reviewed in 365 days (last_review_at=%s)", [input.iso27001_a_8_29_security_testing_in_development.last_review_at])
+	some f in required_fields
+	not input.attestation.attested_fields[f]
+	msg := sprintf("security_testing attestation missing required field: %s", [f])
+}
+
+deny contains msg if {
+	review_due := time.parse_rfc3339_ns(input.attestation.attested_fields.next_review_due)
+	review_due < time.now_ns()
+	msg := sprintf("security_testing review is overdue (next_review_due=%s)", [input.attestation.attested_fields.next_review_due])
+}
+
+warn contains msg if {
+	review_due := time.parse_rfc3339_ns(input.attestation.attested_fields.next_review_due)
+	review_due < (time.now_ns() + 30 * 24 * 3600 * 1000 * 1000 * 1000)
+	review_due >= time.now_ns()
+	msg := sprintf("security_testing review due within 30 days (%s)", [input.attestation.attested_fields.next_review_due])
 }

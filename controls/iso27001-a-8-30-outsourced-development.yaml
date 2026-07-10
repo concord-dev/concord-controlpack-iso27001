@@ -6,35 +6,44 @@ metadata:
   name: iso27001-a-8-30-outsourced-development
   title: Outsourced development is supervised and monitored
   framework: iso27001
-  severity: low
-  tags: []
+  category: Technological Controls
+  severity: medium
+  tags:
+    - iso27001
   owners:
-    - team: concord-dev
+    - team: security
 
 spec:
   description: |
-    TODO: describe what ISO27001-A.8.30-outsourced-development enforces.
+    ISO/IEC 27001:2022 A.8.30 requires the organization to direct, monitor, and review outsourced system development activities. Concord verifies a cosigned attestation of the supervision process, the security requirements imposed on the supplier, and monitoring.
+
+  rationale: |
+    Outsourced code inherits the vendor's security posture; supervision and requirements are how you govern that risk.
 
   evidence:
-    - id: iso27001_a_8_30_outsourced_development
+    - id: attestation
       source: attestation
       type: policy_attestation
       fixture: ../tests/fixtures/iso27001-a-8-30-outsourced-development-pass.json
       params:
-              schema: TODO  # e.g. ropa-v1, dpia-v1, dpa-v1, ism-v1
-              signers:
-                - dpo@acme.com
-              max_age_days: 365
+        kind: outsourced_development
 
   policy:
     engine: rego
-    package: concord.iso27001.iso27001_a_8_30_outsourced_development
+    package: concord.iso27001.a_8_30_outsourced_development
     file: ../policies/iso27001-a-8-30-outsourced-development.rego
 
   remediation:
     runbook: docs/remediation/iso27001-a-8-30-outsourced-development.md
     auto_fix: false
-    estimated_effort: 30m
+    estimated_effort: 2d
 
-  status: draft
-  blocking: false
+  mappings:
+    iso27001:
+      - "A.8.30"
+    nist_800_53:
+      - "SA-4"
+      - "SA-9"
+
+  status: stable
+  blocking: true

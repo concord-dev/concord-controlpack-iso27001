@@ -6,35 +6,44 @@ metadata:
   name: iso27001-a-8-34-protection-of-information-systems-during-audit
   title: Audit testing of operational systems is planned to minimise disruption
   framework: iso27001
+  category: Technological Controls
   severity: low
-  tags: []
+  tags:
+    - iso27001
   owners:
-    - team: concord-dev
+    - team: security
 
 spec:
   description: |
-    TODO: describe what ISO27001-A.8.34-protection-of-information-systems-during-audit enforces.
+    ISO/IEC 27001:2022 A.8.34 requires audit tests and other assurance activities involving operational systems to be planned and agreed to minimise disruption. Concord verifies a cosigned attestation of the audit planning process, the access scoping, and disruption-minimisation measures.
+
+  rationale: |
+    Uncoordinated audit testing on production can itself cause outages or expose data; A.8.34 governs it.
 
   evidence:
-    - id: iso27001_a_8_34_protection_of_information_systems_during_audit
+    - id: attestation
       source: attestation
       type: policy_attestation
       fixture: ../tests/fixtures/iso27001-a-8-34-protection-of-information-systems-during-audit-pass.json
       params:
-              schema: TODO  # e.g. ropa-v1, dpia-v1, dpa-v1, ism-v1
-              signers:
-                - dpo@acme.com
-              max_age_days: 365
+        kind: audit_protection
 
   policy:
     engine: rego
-    package: concord.iso27001.iso27001_a_8_34_protection_of_information_systems_during_audit
+    package: concord.iso27001.a_8_34_protection_of_information_systems_during_audit
     file: ../policies/iso27001-a-8-34-protection-of-information-systems-during-audit.rego
 
   remediation:
     runbook: docs/remediation/iso27001-a-8-34-protection-of-information-systems-during-audit.md
     auto_fix: false
-    estimated_effort: 30m
+    estimated_effort: 2d
 
-  status: draft
-  blocking: false
+  mappings:
+    iso27001:
+      - "A.8.34"
+    nist_800_53:
+      - "AU-5"
+      - "CA-2"
+
+  status: stable
+  blocking: true

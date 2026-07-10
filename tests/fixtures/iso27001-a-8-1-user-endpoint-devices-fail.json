@@ -1,8 +1,9 @@
 {
-  "iso27001_a_8_1_user_endpoint_devices": {
-    "fetched_at": "2026-01-01T00:00:00Z",
-    "resources": [
-      { "arn": "arn:aws:s3:::acme-logs", "compliant": false, "reason": "public access block disabled" }
-    ]
+  "kind": "endpoint_management",
+  "attested_fields": {
+    "mdm_enforcement": "documented for endpoint_management",
+    "encryption_requirement": "documented for endpoint_management",
+    "last_reviewed_at": "2026-06-01T00:00:00Z",
+    "next_review_due": "2099-12-31T23:59:59Z"
   }
 }

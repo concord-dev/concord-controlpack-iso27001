@@ -1,8 +1,10 @@
 {
-  "iso27001_a_8_22_segregation_of_networks": {
-    "fetched_at": "2026-01-01T00:00:00Z",
-    "resources": [
-      { "arn": "arn:aws:s3:::acme-logs", "compliant": true, "reason": "" }
-    ]
+  "kind": "network_segregation",
+  "attested_fields": {
+    "segmentation_design": "documented for network_segregation",
+    "trust_zones": "documented for network_segregation",
+    "enforcement": "documented for network_segregation",
+    "last_reviewed_at": "2026-06-01T00:00:00Z",
+    "next_review_due": "2099-12-31T23:59:59Z"
   }
 }

@@ -1,20 +1,37 @@
-package concord.iso27001.iso27001_a_8_11_data_masking
+package concord.iso27001.a_8_11_data_masking
 
 import rego.v1
-import data.concord.lib.attestation
-import data.concord.lib.evidence
+
+# ISO/IEC 27001:2022 A.8.11 — Data masking is applied when protecting sensitive information
+# Structured attestation (source: attestation / policy_attestation).
+
+required_fields := {"masking_techniques", "scope", "tooling", "last_reviewed_at", "next_review_due"}
 
 deny contains msg if {
-	not evidence.present(input, "iso27001_a_8_11_data_masking")
-	msg := "ISO27001-A.8.11-data-masking: no signed attestation submitted"
+	not input.attestation
+	msg := "no data_masking attestation collected"
 }
 
 deny contains msg if {
-	not attestation.not_expired(input.iso27001_a_8_11_data_masking)
-	msg := sprintf("ISO27001-A.8.11-data-masking: attestation expired (expires_at=%s)", [input.iso27001_a_8_11_data_masking.expires_at])
+	input.attestation.kind != "data_masking"
+	msg := sprintf("attestation kind is %q, expected \"data_masking\"", [input.attestation.kind])
 }
 
 deny contains msg if {
-	not attestation.fresh(input.iso27001_a_8_11_data_masking, 365)
-	msg := sprintf("ISO27001-A.8.11-data-masking: attestation not reviewed in 365 days (last_review_at=%s)", [input.iso27001_a_8_11_data_masking.last_review_at])
+	some f in required_fields
+	not input.attestation.attested_fields[f]
+	msg := sprintf("data_masking attestation missing required field: %s", [f])
+}
+
+deny contains msg if {
+	review_due := time.parse_rfc3339_ns(input.attestation.attested_fields.next_review_due)
+	review_due < time.now_ns()
+	msg := sprintf("data_masking review is overdue (next_review_due=%s)", [input.attestation.attested_fields.next_review_due])
+}
+
+warn contains msg if {
+	review_due := time.parse_rfc3339_ns(input.attestation.attested_fields.next_review_due)
+	review_due < (time.now_ns() + 30 * 24 * 3600 * 1000 * 1000 * 1000)
+	review_due >= time.now_ns()
+	msg := sprintf("data_masking review due within 30 days (%s)", [input.attestation.attested_fields.next_review_due])
 }
