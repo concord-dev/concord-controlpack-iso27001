@@ -6,35 +6,43 @@ metadata:
   name: iso27001-a-5-26-response-to-information-security-incidents
   title: Response to incidents follows documented procedures
   framework: iso27001
+  category: Organisational Controls
   severity: high
-  tags: []
+  tags:
+    - iso27001
   owners:
-    - team: concord-dev
+    - team: security
 
 spec:
   description: |
-    TODO: describe what ISO27001-A.5.26-response-to-information-security-incidents enforces.
+    ISO/IEC 27001:2022 A.5.26 requires incidents to be responded to per documented procedures. Concord verifies a cosigned attestation of the response procedures, the responder roles, and the incident communication plan.
+
+  rationale: |
+    Documented, rehearsed response procedures are what keep containment fast and evidence intact under pressure.
 
   evidence:
-    - id: iso27001_a_5_26_response_to_information_security_incidents
+    - id: attestation
       source: attestation
       type: policy_attestation
       fixture: ../tests/fixtures/iso27001-a-5-26-response-to-information-security-incidents-pass.json
       params:
-              schema: TODO  # e.g. ropa-v1, dpia-v1, dpa-v1, ism-v1
-              signers:
-                - dpo@acme.com
-              max_age_days: 365
+        kind: incident_response
 
   policy:
     engine: rego
-    package: concord.iso27001.iso27001_a_5_26_response_to_information_security_incidents
+    package: concord.iso27001.a_5_26_response_to_information_security_incidents
     file: ../policies/iso27001-a-5-26-response-to-information-security-incidents.rego
 
   remediation:
     runbook: docs/remediation/iso27001-a-5-26-response-to-information-security-incidents.md
     auto_fix: false
-    estimated_effort: 30m
+    estimated_effort: 2d
 
-  status: draft
-  blocking: false
+  mappings:
+    iso27001:
+      - "A.5.26"
+    nist_800_53:
+      - "IR-4"
+
+  status: stable
+  blocking: true

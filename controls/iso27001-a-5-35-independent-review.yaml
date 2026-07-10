@@ -6,35 +6,44 @@ metadata:
   name: iso27001-a-5-35-independent-review
   title: Independent reviews of information security are conducted
   framework: iso27001
+  category: Organisational Controls
   severity: medium
-  tags: []
+  tags:
+    - iso27001
   owners:
-    - team: concord-dev
+    - team: security
 
 spec:
   description: |
-    TODO: describe what ISO27001-A.5.35-independent-review enforces.
+    ISO/IEC 27001:2022 A.5.35 requires the information security approach to be reviewed independently at planned intervals. Concord verifies a cosigned attestation of the review scope, the reviewer's independence, and how findings are tracked to closure.
+
+  rationale: |
+    Independent review is the check against self-graded security; auditors weight it heavily for objectivity.
 
   evidence:
-    - id: iso27001_a_5_35_independent_review
+    - id: attestation
       source: attestation
       type: policy_attestation
       fixture: ../tests/fixtures/iso27001-a-5-35-independent-review-pass.json
       params:
-              schema: TODO  # e.g. ropa-v1, dpia-v1, dpa-v1, ism-v1
-              signers:
-                - dpo@acme.com
-              max_age_days: 365
+        kind: independent_review
 
   policy:
     engine: rego
-    package: concord.iso27001.iso27001_a_5_35_independent_review
+    package: concord.iso27001.a_5_35_independent_review
     file: ../policies/iso27001-a-5-35-independent-review.rego
 
   remediation:
     runbook: docs/remediation/iso27001-a-5-35-independent-review.md
     auto_fix: false
-    estimated_effort: 30m
+    estimated_effort: 2d
 
-  status: draft
-  blocking: false
+  mappings:
+    iso27001:
+      - "A.5.35"
+    nist_800_53:
+      - "CA-2"
+      - "PM-14"
+
+  status: stable
+  blocking: true

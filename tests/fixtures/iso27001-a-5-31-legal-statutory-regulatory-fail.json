@@ -1,11 +1,9 @@
 {
-  "iso27001_a_5_31_legal_statutory_regulatory": {
-    "fetched_at": "2026-01-01T00:00:00Z",
-    "version": "1",
-    "owner": "dpo@acme.com",
-    "signers": ["dpo@acme.com"],
-    "last_review_at": "2023-01-01T00:00:00Z",
-    "expires_at": "2024-06-01T00:00:00Z",
-    "attested_fields": ["scope"]
+  "kind": "legal_requirements",
+  "attested_fields": {
+    "identification_process": "documented for legal_requirements",
+    "compliance_tracking": "documented for legal_requirements",
+    "last_reviewed_at": "2026-06-01T00:00:00Z",
+    "next_review_due": "2099-12-31T23:59:59Z"
   }
 }

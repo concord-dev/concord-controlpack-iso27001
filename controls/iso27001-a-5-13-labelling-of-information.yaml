@@ -6,35 +6,43 @@ metadata:
   name: iso27001-a-5-13-labelling-of-information
   title: Information labelling is consistent with the classification scheme
   framework: iso27001
-  severity: low
-  tags: []
+  category: Organisational Controls
+  severity: medium
+  tags:
+    - iso27001
   owners:
-    - team: concord-dev
+    - team: security
 
 spec:
   description: |
-    TODO: describe what ISO27001-A.5.13-labelling-of-information enforces.
+    ISO/IEC 27001:2022 A.5.13 requires an appropriate set of procedures for information labelling. Concord verifies a cosigned attestation of the labelling procedure, the label types in use, and the tooling that applies them.
+
+  rationale: |
+    Labels are how classification is actually enforced by people and DLP tooling at the point of handling.
 
   evidence:
-    - id: iso27001_a_5_13_labelling_of_information
+    - id: attestation
       source: attestation
       type: policy_attestation
       fixture: ../tests/fixtures/iso27001-a-5-13-labelling-of-information-pass.json
       params:
-              schema: TODO  # e.g. ropa-v1, dpia-v1, dpa-v1, ism-v1
-              signers:
-                - dpo@acme.com
-              max_age_days: 365
+        kind: information_labelling
 
   policy:
     engine: rego
-    package: concord.iso27001.iso27001_a_5_13_labelling_of_information
+    package: concord.iso27001.a_5_13_labelling_of_information
     file: ../policies/iso27001-a-5-13-labelling-of-information.rego
 
   remediation:
     runbook: docs/remediation/iso27001-a-5-13-labelling-of-information.md
     auto_fix: false
-    estimated_effort: 30m
+    estimated_effort: 2d
 
-  status: draft
-  blocking: false
+  mappings:
+    iso27001:
+      - "A.5.13"
+    nist_800_53:
+      - "MP-3"
+
+  status: stable
+  blocking: true

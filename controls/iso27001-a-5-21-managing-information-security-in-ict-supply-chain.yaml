@@ -6,35 +6,44 @@ metadata:
   name: iso27001-a-5-21-managing-information-security-in-ict-supply-chain
   title: ICT supply chain information security risks are managed
   framework: iso27001
-  severity: medium
-  tags: []
+  category: Organisational Controls
+  severity: high
+  tags:
+    - iso27001
   owners:
-    - team: concord-dev
+    - team: security
 
 spec:
   description: |
-    TODO: describe what ISO27001-A.5.21-managing-information-security-in-ict-supply-chain enforces.
+    ISO/IEC 27001:2022 A.5.21 requires managing information security risks in the ICT supply chain. Concord verifies a cosigned attestation of the identified supply-chain risks, how controls flow down to subcontractors, and ongoing monitoring.
+
+  rationale: |
+    Compromise of an upstream ICT supplier propagates to every downstream customer; flow-down controls contain that blast radius.
 
   evidence:
-    - id: iso27001_a_5_21_managing_information_security_in_ict_supply_chain
+    - id: attestation
       source: attestation
       type: policy_attestation
       fixture: ../tests/fixtures/iso27001-a-5-21-managing-information-security-in-ict-supply-chain-pass.json
       params:
-              schema: TODO  # e.g. ropa-v1, dpia-v1, dpa-v1, ism-v1
-              signers:
-                - dpo@acme.com
-              max_age_days: 365
+        kind: ict_supply_chain
 
   policy:
     engine: rego
-    package: concord.iso27001.iso27001_a_5_21_managing_information_security_in_ict_supply_chain
+    package: concord.iso27001.a_5_21_managing_information_security_in_ict_supply_chain
     file: ../policies/iso27001-a-5-21-managing-information-security-in-ict-supply-chain.rego
 
   remediation:
     runbook: docs/remediation/iso27001-a-5-21-managing-information-security-in-ict-supply-chain.md
     auto_fix: false
-    estimated_effort: 30m
+    estimated_effort: 2d
 
-  status: draft
-  blocking: false
+  mappings:
+    iso27001:
+      - "A.5.21"
+    nist_800_53:
+      - "SR-3"
+      - "SR-5"
+
+  status: stable
+  blocking: true

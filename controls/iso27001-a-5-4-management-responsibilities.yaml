@@ -6,35 +6,44 @@ metadata:
   name: iso27001-a-5-4-management-responsibilities
   title: Management mandates adherence to information security policy
   framework: iso27001
+  category: Organisational Controls
   severity: medium
-  tags: []
+  tags:
+    - iso27001
   owners:
-    - team: concord-dev
+    - team: security
 
 spec:
   description: |
-    TODO: describe what ISO27001-A.5.4-management-responsibilities enforces.
+    ISO/IEC 27001:2022 A.5.4 requires management to require all personnel to apply information security per established policies. Concord verifies a cosigned attestation of the management directive, its enforcement mechanism, and how it is communicated.
+
+  rationale: |
+    Visible management mandate is what auditors treat as evidence of tone-from-the-top and drives policy adherence.
 
   evidence:
-    - id: iso27001_a_5_4_management_responsibilities
+    - id: attestation
       source: attestation
       type: policy_attestation
       fixture: ../tests/fixtures/iso27001-a-5-4-management-responsibilities-pass.json
       params:
-              schema: TODO  # e.g. ropa-v1, dpia-v1, dpa-v1, ism-v1
-              signers:
-                - dpo@acme.com
-              max_age_days: 365
+        kind: management_responsibilities
 
   policy:
     engine: rego
-    package: concord.iso27001.iso27001_a_5_4_management_responsibilities
+    package: concord.iso27001.a_5_4_management_responsibilities
     file: ../policies/iso27001-a-5-4-management-responsibilities.rego
 
   remediation:
     runbook: docs/remediation/iso27001-a-5-4-management-responsibilities.md
     auto_fix: false
-    estimated_effort: 30m
+    estimated_effort: 2d
 
-  status: draft
-  blocking: false
+  mappings:
+    iso27001:
+      - "A.5.4"
+    nist_800_53:
+      - "PM-1"
+      - "PL-4"
+
+  status: stable
+  blocking: true

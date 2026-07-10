@@ -1,20 +1,37 @@
-package concord.iso27001.iso27001_a_5_21_managing_information_security_in_ict_supply_chain
+package concord.iso27001.a_5_21_managing_information_security_in_ict_supply_chain
 
 import rego.v1
-import data.concord.lib.attestation
-import data.concord.lib.evidence
+
+# ISO/IEC 27001:2022 A.5.21 — ICT supply chain information security risks are managed
+# Structured attestation (source: attestation / policy_attestation).
+
+required_fields := {"supply_chain_risks", "controls_flowdown", "monitoring", "last_reviewed_at", "next_review_due"}
 
 deny contains msg if {
-	not evidence.present(input, "iso27001_a_5_21_managing_information_security_in_ict_supply_chain")
-	msg := "ISO27001-A.5.21-managing-information-security-in-ict-supply-chain: no signed attestation submitted"
+	not input.attestation
+	msg := "no ict_supply_chain attestation collected"
 }
 
 deny contains msg if {
-	not attestation.not_expired(input.iso27001_a_5_21_managing_information_security_in_ict_supply_chain)
-	msg := sprintf("ISO27001-A.5.21-managing-information-security-in-ict-supply-chain: attestation expired (expires_at=%s)", [input.iso27001_a_5_21_managing_information_security_in_ict_supply_chain.expires_at])
+	input.attestation.kind != "ict_supply_chain"
+	msg := sprintf("attestation kind is %q, expected \"ict_supply_chain\"", [input.attestation.kind])
 }
 
 deny contains msg if {
-	not attestation.fresh(input.iso27001_a_5_21_managing_information_security_in_ict_supply_chain, 365)
-	msg := sprintf("ISO27001-A.5.21-managing-information-security-in-ict-supply-chain: attestation not reviewed in 365 days (last_review_at=%s)", [input.iso27001_a_5_21_managing_information_security_in_ict_supply_chain.last_review_at])
+	some f in required_fields
+	not input.attestation.attested_fields[f]
+	msg := sprintf("ict_supply_chain attestation missing required field: %s", [f])
+}
+
+deny contains msg if {
+	review_due := time.parse_rfc3339_ns(input.attestation.attested_fields.next_review_due)
+	review_due < time.now_ns()
+	msg := sprintf("ict_supply_chain review is overdue (next_review_due=%s)", [input.attestation.attested_fields.next_review_due])
+}
+
+warn contains msg if {
+	review_due := time.parse_rfc3339_ns(input.attestation.attested_fields.next_review_due)
+	review_due < (time.now_ns() + 30 * 24 * 3600 * 1000 * 1000 * 1000)
+	review_due >= time.now_ns()
+	msg := sprintf("ict_supply_chain review due within 30 days (%s)", [input.attestation.attested_fields.next_review_due])
 }

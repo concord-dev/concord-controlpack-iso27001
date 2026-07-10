@@ -6,35 +6,44 @@ metadata:
   name: iso27001-a-5-12-classification-of-information
   title: Information is classified according to legal, business, and security needs
   framework: iso27001
+  category: Organisational Controls
   severity: high
-  tags: []
+  tags:
+    - iso27001
   owners:
-    - team: concord-dev
+    - team: security
 
 spec:
   description: |
-    TODO: describe what ISO27001-A.5.12-classification-of-information enforces.
+    ISO/IEC 27001:2022 A.5.12 requires information to be classified per confidentiality, integrity, availability, and legal requirements. Concord verifies a cosigned attestation of the classification scheme, the classification criteria, and the per-level handling rules.
+
+  rationale: |
+    Classification drives every downstream protection decision; an absent or unapplied scheme collapses data-handling controls.
 
   evidence:
-    - id: iso27001_a_5_12_classification_of_information
+    - id: attestation
       source: attestation
       type: policy_attestation
       fixture: ../tests/fixtures/iso27001-a-5-12-classification-of-information-pass.json
       params:
-              schema: TODO  # e.g. ropa-v1, dpia-v1, dpa-v1, ism-v1
-              signers:
-                - dpo@acme.com
-              max_age_days: 365
+        kind: information_classification
 
   policy:
     engine: rego
-    package: concord.iso27001.iso27001_a_5_12_classification_of_information
+    package: concord.iso27001.a_5_12_classification_of_information
     file: ../policies/iso27001-a-5-12-classification-of-information.rego
 
   remediation:
     runbook: docs/remediation/iso27001-a-5-12-classification-of-information.md
     auto_fix: false
-    estimated_effort: 30m
+    estimated_effort: 2d
 
-  status: draft
-  blocking: false
+  mappings:
+    iso27001:
+      - "A.5.12"
+    nist_800_53:
+      - "RA-2"
+      - "MP-3"
+
+  status: stable
+  blocking: true

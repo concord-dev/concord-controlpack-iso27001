@@ -6,35 +6,44 @@ metadata:
   name: iso27001-a-5-34-privacy-and-pii
   title: Privacy and protection of PII is ensured per regulations
   framework: iso27001
+  category: Organisational Controls
   severity: high
-  tags: []
+  tags:
+    - iso27001
   owners:
-    - team: concord-dev
+    - team: security
 
 spec:
   description: |
-    TODO: describe what ISO27001-A.5.34-privacy-and-pii enforces.
+    ISO/IEC 27001:2022 A.5.34 requires identifying and meeting requirements for privacy and protection of PII. Concord verifies a cosigned attestation of the PII inventory, the legal basis for processing, and the data-subject-rights process.
+
+  rationale: |
+    PII mishandling triggers GDPR/CCPA penalties and breach notification; A.5.34 is the privacy anchor control.
 
   evidence:
-    - id: iso27001_a_5_34_privacy_and_pii
+    - id: attestation
       source: attestation
       type: policy_attestation
       fixture: ../tests/fixtures/iso27001-a-5-34-privacy-and-pii-pass.json
       params:
-              schema: TODO  # e.g. ropa-v1, dpia-v1, dpa-v1, ism-v1
-              signers:
-                - dpo@acme.com
-              max_age_days: 365
+        kind: privacy_pii
 
   policy:
     engine: rego
-    package: concord.iso27001.iso27001_a_5_34_privacy_and_pii
+    package: concord.iso27001.a_5_34_privacy_and_pii
     file: ../policies/iso27001-a-5-34-privacy-and-pii.rego
 
   remediation:
     runbook: docs/remediation/iso27001-a-5-34-privacy-and-pii.md
     auto_fix: false
-    estimated_effort: 30m
+    estimated_effort: 2d
 
-  status: draft
-  blocking: false
+  mappings:
+    iso27001:
+      - "A.5.34"
+    nist_800_53:
+      - "PT-1"
+      - "PT-3"
+
+  status: stable
+  blocking: true

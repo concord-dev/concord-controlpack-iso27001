@@ -6,35 +6,44 @@ metadata:
   name: iso27001-a-5-11-return-of-assets
   title: Assets are returned upon termination of employment
   framework: iso27001
-  severity: low
-  tags: []
+  category: Organisational Controls
+  severity: medium
+  tags:
+    - iso27001
   owners:
-    - team: concord-dev
+    - team: security
 
 spec:
   description: |
-    TODO: describe what ISO27001-A.5.11-return-of-assets enforces.
+    ISO/IEC 27001:2022 A.5.11 requires personnel to return organizational assets on termination or change of employment. Concord verifies a cosigned attestation of the return process, the asset types tracked, and its integration with offboarding.
+
+  rationale: |
+    Unreturned laptops, tokens, and credentials are a frequent source of post-termination data exposure.
 
   evidence:
-    - id: iso27001_a_5_11_return_of_assets
+    - id: attestation
       source: attestation
       type: policy_attestation
       fixture: ../tests/fixtures/iso27001-a-5-11-return-of-assets-pass.json
       params:
-              schema: TODO  # e.g. ropa-v1, dpia-v1, dpa-v1, ism-v1
-              signers:
-                - dpo@acme.com
-              max_age_days: 365
+        kind: asset_return
 
   policy:
     engine: rego
-    package: concord.iso27001.iso27001_a_5_11_return_of_assets
+    package: concord.iso27001.a_5_11_return_of_assets
     file: ../policies/iso27001-a-5-11-return-of-assets.rego
 
   remediation:
     runbook: docs/remediation/iso27001-a-5-11-return-of-assets.md
     auto_fix: false
-    estimated_effort: 30m
+    estimated_effort: 2d
 
-  status: draft
-  blocking: false
+  mappings:
+    iso27001:
+      - "A.5.11"
+    nist_800_53:
+      - "PS-4"
+      - "PS-5"
+
+  status: stable
+  blocking: true

@@ -6,35 +6,44 @@ metadata:
   name: iso27001-a-5-24-incident-management-planning
   title: Information security incident response is planned and prepared
   framework: iso27001
+  category: Organisational Controls
   severity: high
-  tags: []
+  tags:
+    - iso27001
   owners:
-    - team: concord-dev
+    - team: security
 
 spec:
   description: |
-    TODO: describe what ISO27001-A.5.24-incident-management-planning enforces.
+    ISO/IEC 27001:2022 A.5.24 requires planning and preparation for managing information security incidents. Concord verifies a cosigned attestation of the incident roles and responsibilities, the response procedures, and the preparation activities (tooling, training).
+
+  rationale: |
+    An unplanned incident response is slow and error-prone; A.5.24 is the readiness foundation the rest of A.5.25-28 builds on.
 
   evidence:
-    - id: iso27001_a_5_24_incident_management_planning
+    - id: attestation
       source: attestation
       type: policy_attestation
       fixture: ../tests/fixtures/iso27001-a-5-24-incident-management-planning-pass.json
       params:
-              schema: TODO  # e.g. ropa-v1, dpia-v1, dpa-v1, ism-v1
-              signers:
-                - dpo@acme.com
-              max_age_days: 365
+        kind: incident_planning
 
   policy:
     engine: rego
-    package: concord.iso27001.iso27001_a_5_24_incident_management_planning
+    package: concord.iso27001.a_5_24_incident_management_planning
     file: ../policies/iso27001-a-5-24-incident-management-planning.rego
 
   remediation:
     runbook: docs/remediation/iso27001-a-5-24-incident-management-planning.md
     auto_fix: false
-    estimated_effort: 30m
+    estimated_effort: 2d
 
-  status: draft
-  blocking: false
+  mappings:
+    iso27001:
+      - "A.5.24"
+    nist_800_53:
+      - "IR-1"
+      - "IR-8"
+
+  status: stable
+  blocking: true

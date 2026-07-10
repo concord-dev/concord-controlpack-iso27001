@@ -1,11 +1,10 @@
 {
-  "iso27001_a_5_20_information_security_in_supplier_agreements": {
-    "fetched_at": "2026-01-01T00:00:00Z",
-    "version": "1",
-    "owner": "dpo@acme.com",
-    "signers": ["dpo@acme.com"],
-    "last_review_at": "2026-01-01T00:00:00Z",
-    "expires_at": "2027-01-01T00:00:00Z",
-    "attested_fields": ["scope", "lawful_basis", "retention"]
+  "kind": "supplier_agreements",
+  "attested_fields": {
+    "security_clauses": "documented for supplier_agreements",
+    "agreement_coverage": "documented for supplier_agreements",
+    "review_process": "documented for supplier_agreements",
+    "last_reviewed_at": "2026-06-01T00:00:00Z",
+    "next_review_due": "2099-12-31T23:59:59Z"
   }
 }

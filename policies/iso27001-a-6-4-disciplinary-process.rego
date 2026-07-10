@@ -1,20 +1,37 @@
-package concord.iso27001.iso27001_a_6_4_disciplinary_process
+package concord.iso27001.a_6_4_disciplinary_process
 
 import rego.v1
-import data.concord.lib.attestation
-import data.concord.lib.evidence
+
+# ISO/IEC 27001:2022 A.6.4 — Formal disciplinary process for policy violations is documented
+# Structured attestation (source: attestation / policy_attestation).
+
+required_fields := {"process_steps", "violation_categories", "communication", "last_reviewed_at", "next_review_due"}
 
 deny contains msg if {
-	not evidence.present(input, "iso27001_a_6_4_disciplinary_process")
-	msg := "ISO27001-A.6.4-disciplinary-process: no signed attestation submitted"
+	not input.attestation
+	msg := "no disciplinary_process attestation collected"
 }
 
 deny contains msg if {
-	not attestation.not_expired(input.iso27001_a_6_4_disciplinary_process)
-	msg := sprintf("ISO27001-A.6.4-disciplinary-process: attestation expired (expires_at=%s)", [input.iso27001_a_6_4_disciplinary_process.expires_at])
+	input.attestation.kind != "disciplinary_process"
+	msg := sprintf("attestation kind is %q, expected \"disciplinary_process\"", [input.attestation.kind])
 }
 
 deny contains msg if {
-	not attestation.fresh(input.iso27001_a_6_4_disciplinary_process, 365)
-	msg := sprintf("ISO27001-A.6.4-disciplinary-process: attestation not reviewed in 365 days (last_review_at=%s)", [input.iso27001_a_6_4_disciplinary_process.last_review_at])
+	some f in required_fields
+	not input.attestation.attested_fields[f]
+	msg := sprintf("disciplinary_process attestation missing required field: %s", [f])
+}
+
+deny contains msg if {
+	review_due := time.parse_rfc3339_ns(input.attestation.attested_fields.next_review_due)
+	review_due < time.now_ns()
+	msg := sprintf("disciplinary_process review is overdue (next_review_due=%s)", [input.attestation.attested_fields.next_review_due])
+}
+
+warn contains msg if {
+	review_due := time.parse_rfc3339_ns(input.attestation.attested_fields.next_review_due)
+	review_due < (time.now_ns() + 30 * 24 * 3600 * 1000 * 1000 * 1000)
+	review_due >= time.now_ns()
+	msg := sprintf("disciplinary_process review due within 30 days (%s)", [input.attestation.attested_fields.next_review_due])
 }

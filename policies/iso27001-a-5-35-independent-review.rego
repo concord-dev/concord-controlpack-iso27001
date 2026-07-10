@@ -1,20 +1,37 @@
-package concord.iso27001.iso27001_a_5_35_independent_review
+package concord.iso27001.a_5_35_independent_review
 
 import rego.v1
-import data.concord.lib.attestation
-import data.concord.lib.evidence
+
+# ISO/IEC 27001:2022 A.5.35 — Independent reviews of information security are conducted
+# Structured attestation (source: attestation / policy_attestation).
+
+required_fields := {"review_scope", "reviewer_independence", "findings_tracked", "last_reviewed_at", "next_review_due"}
 
 deny contains msg if {
-	not evidence.present(input, "iso27001_a_5_35_independent_review")
-	msg := "ISO27001-A.5.35-independent-review: no signed attestation submitted"
+	not input.attestation
+	msg := "no independent_review attestation collected"
 }
 
 deny contains msg if {
-	not attestation.not_expired(input.iso27001_a_5_35_independent_review)
-	msg := sprintf("ISO27001-A.5.35-independent-review: attestation expired (expires_at=%s)", [input.iso27001_a_5_35_independent_review.expires_at])
+	input.attestation.kind != "independent_review"
+	msg := sprintf("attestation kind is %q, expected \"independent_review\"", [input.attestation.kind])
 }
 
 deny contains msg if {
-	not attestation.fresh(input.iso27001_a_5_35_independent_review, 365)
-	msg := sprintf("ISO27001-A.5.35-independent-review: attestation not reviewed in 365 days (last_review_at=%s)", [input.iso27001_a_5_35_independent_review.last_review_at])
+	some f in required_fields
+	not input.attestation.attested_fields[f]
+	msg := sprintf("independent_review attestation missing required field: %s", [f])
+}
+
+deny contains msg if {
+	review_due := time.parse_rfc3339_ns(input.attestation.attested_fields.next_review_due)
+	review_due < time.now_ns()
+	msg := sprintf("independent_review review is overdue (next_review_due=%s)", [input.attestation.attested_fields.next_review_due])
+}
+
+warn contains msg if {
+	review_due := time.parse_rfc3339_ns(input.attestation.attested_fields.next_review_due)
+	review_due < (time.now_ns() + 30 * 24 * 3600 * 1000 * 1000 * 1000)
+	review_due >= time.now_ns()
+	msg := sprintf("independent_review review due within 30 days (%s)", [input.attestation.attested_fields.next_review_due])
 }

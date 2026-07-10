@@ -1,20 +1,37 @@
-package concord.iso27001.iso27001_a_6_6_confidentiality_or_non_disclosure_agreements
+package concord.iso27001.a_6_6_confidentiality_or_non_disclosure_agreements
 
 import rego.v1
-import data.concord.lib.attestation
-import data.concord.lib.evidence
+
+# ISO/IEC 27001:2022 A.6.6 — Confidentiality / NDA agreements are signed where required
+# Structured attestation (source: attestation / policy_attestation).
+
+required_fields := {"nda_requirements", "coverage", "review_process", "last_reviewed_at", "next_review_due"}
 
 deny contains msg if {
-	not evidence.present(input, "iso27001_a_6_6_confidentiality_or_non_disclosure_agreements")
-	msg := "ISO27001-A.6.6-confidentiality-or-non-disclosure-agreements: no signed attestation submitted"
+	not input.attestation
+	msg := "no nda_management attestation collected"
 }
 
 deny contains msg if {
-	not attestation.not_expired(input.iso27001_a_6_6_confidentiality_or_non_disclosure_agreements)
-	msg := sprintf("ISO27001-A.6.6-confidentiality-or-non-disclosure-agreements: attestation expired (expires_at=%s)", [input.iso27001_a_6_6_confidentiality_or_non_disclosure_agreements.expires_at])
+	input.attestation.kind != "nda_management"
+	msg := sprintf("attestation kind is %q, expected \"nda_management\"", [input.attestation.kind])
 }
 
 deny contains msg if {
-	not attestation.fresh(input.iso27001_a_6_6_confidentiality_or_non_disclosure_agreements, 365)
-	msg := sprintf("ISO27001-A.6.6-confidentiality-or-non-disclosure-agreements: attestation not reviewed in 365 days (last_review_at=%s)", [input.iso27001_a_6_6_confidentiality_or_non_disclosure_agreements.last_review_at])
+	some f in required_fields
+	not input.attestation.attested_fields[f]
+	msg := sprintf("nda_management attestation missing required field: %s", [f])
+}
+
+deny contains msg if {
+	review_due := time.parse_rfc3339_ns(input.attestation.attested_fields.next_review_due)
+	review_due < time.now_ns()
+	msg := sprintf("nda_management review is overdue (next_review_due=%s)", [input.attestation.attested_fields.next_review_due])
+}
+
+warn contains msg if {
+	review_due := time.parse_rfc3339_ns(input.attestation.attested_fields.next_review_due)
+	review_due < (time.now_ns() + 30 * 24 * 3600 * 1000 * 1000 * 1000)
+	review_due >= time.now_ns()
+	msg := sprintf("nda_management review due within 30 days (%s)", [input.attestation.attested_fields.next_review_due])
 }

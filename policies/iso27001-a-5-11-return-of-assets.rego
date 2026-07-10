@@ -1,20 +1,37 @@
-package concord.iso27001.iso27001_a_5_11_return_of_assets
+package concord.iso27001.a_5_11_return_of_assets
 
 import rego.v1
-import data.concord.lib.attestation
-import data.concord.lib.evidence
+
+# ISO/IEC 27001:2022 A.5.11 — Assets are returned upon termination of employment
+# Structured attestation (source: attestation / policy_attestation).
+
+required_fields := {"return_process", "tracked_asset_types", "offboarding_integration", "last_reviewed_at", "next_review_due"}
 
 deny contains msg if {
-	not evidence.present(input, "iso27001_a_5_11_return_of_assets")
-	msg := "ISO27001-A.5.11-return-of-assets: no signed attestation submitted"
+	not input.attestation
+	msg := "no asset_return attestation collected"
 }
 
 deny contains msg if {
-	not attestation.not_expired(input.iso27001_a_5_11_return_of_assets)
-	msg := sprintf("ISO27001-A.5.11-return-of-assets: attestation expired (expires_at=%s)", [input.iso27001_a_5_11_return_of_assets.expires_at])
+	input.attestation.kind != "asset_return"
+	msg := sprintf("attestation kind is %q, expected \"asset_return\"", [input.attestation.kind])
 }
 
 deny contains msg if {
-	not attestation.fresh(input.iso27001_a_5_11_return_of_assets, 365)
-	msg := sprintf("ISO27001-A.5.11-return-of-assets: attestation not reviewed in 365 days (last_review_at=%s)", [input.iso27001_a_5_11_return_of_assets.last_review_at])
+	some f in required_fields
+	not input.attestation.attested_fields[f]
+	msg := sprintf("asset_return attestation missing required field: %s", [f])
+}
+
+deny contains msg if {
+	review_due := time.parse_rfc3339_ns(input.attestation.attested_fields.next_review_due)
+	review_due < time.now_ns()
+	msg := sprintf("asset_return review is overdue (next_review_due=%s)", [input.attestation.attested_fields.next_review_due])
+}
+
+warn contains msg if {
+	review_due := time.parse_rfc3339_ns(input.attestation.attested_fields.next_review_due)
+	review_due < (time.now_ns() + 30 * 24 * 3600 * 1000 * 1000 * 1000)
+	review_due >= time.now_ns()
+	msg := sprintf("asset_return review due within 30 days (%s)", [input.attestation.attested_fields.next_review_due])
 }

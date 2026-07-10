@@ -6,35 +6,43 @@ metadata:
   name: iso27001-a-5-3-segregation-of-duties
   title: Conflicting duties are segregated to reduce fraud and error
   framework: iso27001
-  severity: medium
-  tags: []
+  category: Organisational Controls
+  severity: high
+  tags:
+    - iso27001
   owners:
-    - team: concord-dev
+    - team: security
 
 spec:
   description: |
-    TODO: describe what ISO27001-A.5.3-segregation-of-duties enforces.
+    ISO/IEC 27001:2022 A.5.3 requires conflicting duties and areas of responsibility to be segregated. Concord verifies a cosigned attestation documenting the conflicting-duties matrix, the separation controls enforcing it, and the periodic review process.
+
+  rationale: |
+    Without segregation of duties a single actor can both commit and conceal fraud; SoD is a core preventive control auditors probe directly.
 
   evidence:
-    - id: iso27001_a_5_3_segregation_of_duties
+    - id: attestation
       source: attestation
       type: policy_attestation
       fixture: ../tests/fixtures/iso27001-a-5-3-segregation-of-duties-pass.json
       params:
-              schema: TODO  # e.g. ropa-v1, dpia-v1, dpa-v1, ism-v1
-              signers:
-                - dpo@acme.com
-              max_age_days: 365
+        kind: segregation_of_duties
 
   policy:
     engine: rego
-    package: concord.iso27001.iso27001_a_5_3_segregation_of_duties
+    package: concord.iso27001.a_5_3_segregation_of_duties
     file: ../policies/iso27001-a-5-3-segregation-of-duties.rego
 
   remediation:
     runbook: docs/remediation/iso27001-a-5-3-segregation-of-duties.md
     auto_fix: false
-    estimated_effort: 30m
+    estimated_effort: 2d
 
-  status: draft
-  blocking: false
+  mappings:
+    iso27001:
+      - "A.5.3"
+    nist_800_53:
+      - "AC-5"
+
+  status: stable
+  blocking: true

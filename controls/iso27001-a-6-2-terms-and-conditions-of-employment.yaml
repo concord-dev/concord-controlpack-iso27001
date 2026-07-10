@@ -6,35 +6,43 @@ metadata:
   name: iso27001-a-6-2-terms-and-conditions-of-employment
   title: Employment contracts state information security responsibilities
   framework: iso27001
-  severity: low
-  tags: []
+  category: People Controls
+  severity: medium
+  tags:
+    - iso27001
   owners:
-    - team: concord-dev
+    - team: security
 
 spec:
   description: |
-    TODO: describe what ISO27001-A.6.2-terms-and-conditions-of-employment enforces.
+    ISO/IEC 27001:2022 A.6.2 requires employment agreements to state personnel and organizational information security responsibilities. Concord verifies a cosigned attestation of the security-responsibilities clause, its coverage across contracts, and acknowledgement tracking.
+
+  rationale: |
+    Contractual security obligations are what make security expectations enforceable throughout employment.
 
   evidence:
-    - id: iso27001_a_6_2_terms_and_conditions_of_employment
+    - id: attestation
       source: attestation
       type: policy_attestation
       fixture: ../tests/fixtures/iso27001-a-6-2-terms-and-conditions-of-employment-pass.json
       params:
-              schema: TODO  # e.g. ropa-v1, dpia-v1, dpa-v1, ism-v1
-              signers:
-                - dpo@acme.com
-              max_age_days: 365
+        kind: employment_terms
 
   policy:
     engine: rego
-    package: concord.iso27001.iso27001_a_6_2_terms_and_conditions_of_employment
+    package: concord.iso27001.a_6_2_terms_and_conditions_of_employment
     file: ../policies/iso27001-a-6-2-terms-and-conditions-of-employment.rego
 
   remediation:
     runbook: docs/remediation/iso27001-a-6-2-terms-and-conditions-of-employment.md
     auto_fix: false
-    estimated_effort: 30m
+    estimated_effort: 2d
 
-  status: draft
-  blocking: false
+  mappings:
+    iso27001:
+      - "A.6.2"
+    nist_800_53:
+      - "PS-6"
+
+  status: stable
+  blocking: true

@@ -6,35 +6,44 @@ metadata:
   name: iso27001-a-5-9-inventory-of-information-assets
   title: Inventory of information assets is maintained and up to date
   framework: iso27001
+  category: Organisational Controls
   severity: high
-  tags: []
+  tags:
+    - iso27001
   owners:
-    - team: concord-dev
+    - team: security
 
 spec:
   description: |
-    TODO: describe what ISO27001-A.5.9-inventory-of-information-assets enforces.
+    ISO/IEC 27001:2022 A.5.9 requires an inventory of information and other associated assets, including owners. Concord verifies a cosigned attestation of the inventory scope, owner assignment, and the review cadence keeping it current.
+
+  rationale: |
+    You cannot protect what you have not inventoried; the asset inventory underpins classification, access, and risk decisions.
 
   evidence:
-    - id: iso27001_a_5_9_inventory_of_information_assets
+    - id: attestation
       source: attestation
       type: policy_attestation
       fixture: ../tests/fixtures/iso27001-a-5-9-inventory-of-information-assets-pass.json
       params:
-              schema: TODO  # e.g. ropa-v1, dpia-v1, dpa-v1, ism-v1
-              signers:
-                - dpo@acme.com
-              max_age_days: 365
+        kind: asset_inventory
 
   policy:
     engine: rego
-    package: concord.iso27001.iso27001_a_5_9_inventory_of_information_assets
+    package: concord.iso27001.a_5_9_inventory_of_information_assets
     file: ../policies/iso27001-a-5-9-inventory-of-information-assets.rego
 
   remediation:
     runbook: docs/remediation/iso27001-a-5-9-inventory-of-information-assets.md
     auto_fix: false
-    estimated_effort: 30m
+    estimated_effort: 2d
 
-  status: draft
-  blocking: false
+  mappings:
+    iso27001:
+      - "A.5.9"
+    nist_800_53:
+      - "CM-8"
+      - "PM-5"
+
+  status: stable
+  blocking: true

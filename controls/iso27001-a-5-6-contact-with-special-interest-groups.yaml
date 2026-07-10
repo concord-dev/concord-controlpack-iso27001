@@ -6,35 +6,44 @@ metadata:
   name: iso27001-a-5-6-contact-with-special-interest-groups
   title: Appropriate contacts with special interest groups are maintained
   framework: iso27001
+  category: Organisational Controls
   severity: low
-  tags: []
+  tags:
+    - iso27001
   owners:
-    - team: concord-dev
+    - team: security
 
 spec:
   description: |
-    TODO: describe what ISO27001-A.5.6-contact-with-special-interest-groups enforces.
+    ISO/IEC 27001:2022 A.5.6 requires contact with special interest groups and professional security forums. Concord verifies a cosigned attestation of the groups engaged, the nature of participation, and how threat intel is shared internally.
+
+  rationale: |
+    Peer and forum contacts are a primary source of early threat intelligence and remediation guidance.
 
   evidence:
-    - id: iso27001_a_5_6_contact_with_special_interest_groups
+    - id: attestation
       source: attestation
       type: policy_attestation
       fixture: ../tests/fixtures/iso27001-a-5-6-contact-with-special-interest-groups-pass.json
       params:
-              schema: TODO  # e.g. ropa-v1, dpia-v1, dpa-v1, ism-v1
-              signers:
-                - dpo@acme.com
-              max_age_days: 365
+        kind: special_interest_groups
 
   policy:
     engine: rego
-    package: concord.iso27001.iso27001_a_5_6_contact_with_special_interest_groups
+    package: concord.iso27001.a_5_6_contact_with_special_interest_groups
     file: ../policies/iso27001-a-5-6-contact-with-special-interest-groups.rego
 
   remediation:
     runbook: docs/remediation/iso27001-a-5-6-contact-with-special-interest-groups.md
     auto_fix: false
-    estimated_effort: 30m
+    estimated_effort: 2d
 
-  status: draft
-  blocking: false
+  mappings:
+    iso27001:
+      - "A.5.6"
+    nist_800_53:
+      - "PM-15"
+      - "SI-5"
+
+  status: stable
+  blocking: true

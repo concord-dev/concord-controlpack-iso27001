@@ -6,35 +6,44 @@ metadata:
   name: iso27001-a-5-36-compliance-with-policies
   title: Compliance with information security policies is reviewed
   framework: iso27001
+  category: Organisational Controls
   severity: medium
-  tags: []
+  tags:
+    - iso27001
   owners:
-    - team: concord-dev
+    - team: security
 
 spec:
   description: |
-    TODO: describe what ISO27001-A.5.36-compliance-with-policies enforces.
+    ISO/IEC 27001:2022 A.5.36 requires regular review of compliance with the information security policy, standards, and procedures. Concord verifies a cosigned attestation of the review process, its coverage, and how exceptions are tracked.
+
+  rationale: |
+    Policies that are never checked for compliance decay into shelfware; A.5.36 keeps them operative.
 
   evidence:
-    - id: iso27001_a_5_36_compliance_with_policies
+    - id: attestation
       source: attestation
       type: policy_attestation
       fixture: ../tests/fixtures/iso27001-a-5-36-compliance-with-policies-pass.json
       params:
-              schema: TODO  # e.g. ropa-v1, dpia-v1, dpa-v1, ism-v1
-              signers:
-                - dpo@acme.com
-              max_age_days: 365
+        kind: policy_compliance_review
 
   policy:
     engine: rego
-    package: concord.iso27001.iso27001_a_5_36_compliance_with_policies
+    package: concord.iso27001.a_5_36_compliance_with_policies
     file: ../policies/iso27001-a-5-36-compliance-with-policies.rego
 
   remediation:
     runbook: docs/remediation/iso27001-a-5-36-compliance-with-policies.md
     auto_fix: false
-    estimated_effort: 30m
+    estimated_effort: 2d
 
-  status: draft
-  blocking: false
+  mappings:
+    iso27001:
+      - "A.5.36"
+    nist_800_53:
+      - "CA-2"
+      - "PM-14"
+
+  status: stable
+  blocking: true

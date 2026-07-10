@@ -6,35 +6,43 @@ metadata:
   name: iso27001-a-5-5-contact-with-authorities
   title: Appropriate contacts with relevant authorities are maintained
   framework: iso27001
+  category: Organisational Controls
   severity: low
-  tags: []
+  tags:
+    - iso27001
   owners:
-    - team: concord-dev
+    - team: security
 
 spec:
   description: |
-    TODO: describe what ISO27001-A.5.5-contact-with-authorities enforces.
+    ISO/IEC 27001:2022 A.5.5 requires maintaining contact with relevant authorities. Concord verifies a cosigned attestation identifying the relevant authorities, the contact process, and the triggers for escalation.
+
+  rationale: |
+    Pre-established authority contacts (regulators, CERTs, law enforcement) shorten breach-notification and response timelines.
 
   evidence:
-    - id: iso27001_a_5_5_contact_with_authorities
+    - id: attestation
       source: attestation
       type: policy_attestation
       fixture: ../tests/fixtures/iso27001-a-5-5-contact-with-authorities-pass.json
       params:
-              schema: TODO  # e.g. ropa-v1, dpia-v1, dpa-v1, ism-v1
-              signers:
-                - dpo@acme.com
-              max_age_days: 365
+        kind: authority_contacts
 
   policy:
     engine: rego
-    package: concord.iso27001.iso27001_a_5_5_contact_with_authorities
+    package: concord.iso27001.a_5_5_contact_with_authorities
     file: ../policies/iso27001-a-5-5-contact-with-authorities.rego
 
   remediation:
     runbook: docs/remediation/iso27001-a-5-5-contact-with-authorities.md
     auto_fix: false
-    estimated_effort: 30m
+    estimated_effort: 2d
 
-  status: draft
-  blocking: false
+  mappings:
+    iso27001:
+      - "A.5.5"
+    nist_800_53:
+      - "IR-6"
+
+  status: stable
+  blocking: true

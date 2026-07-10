@@ -1,11 +1,9 @@
 {
-  "iso27001_a_5_26_response_to_information_security_incidents": {
-    "fetched_at": "2026-01-01T00:00:00Z",
-    "version": "1",
-    "owner": "dpo@acme.com",
-    "signers": ["dpo@acme.com"],
-    "last_review_at": "2023-01-01T00:00:00Z",
-    "expires_at": "2024-06-01T00:00:00Z",
-    "attested_fields": ["scope"]
+  "kind": "incident_response",
+  "attested_fields": {
+    "roles": "documented for incident_response",
+    "communication_plan": "documented for incident_response",
+    "last_reviewed_at": "2026-06-01T00:00:00Z",
+    "next_review_due": "2099-12-31T23:59:59Z"
   }
 }

@@ -6,35 +6,43 @@ metadata:
   name: iso27001-a-5-27-learning-from-incidents
   title: Knowledge from incidents is used to improve controls
   framework: iso27001
+  category: Organisational Controls
   severity: medium
-  tags: []
+  tags:
+    - iso27001
   owners:
-    - team: concord-dev
+    - team: security
 
 spec:
   description: |
-    TODO: describe what ISO27001-A.5.27-learning-from-incidents enforces.
+    ISO/IEC 27001:2022 A.5.27 requires knowledge gained from incidents to reduce the likelihood or impact of future incidents. Concord verifies a cosigned attestation of the lessons-learned process, the resulting control improvements, and how they are tracked to closure.
+
+  rationale: |
+    Incidents that do not feed back into control improvements are destined to recur.
 
   evidence:
-    - id: iso27001_a_5_27_learning_from_incidents
+    - id: attestation
       source: attestation
       type: policy_attestation
       fixture: ../tests/fixtures/iso27001-a-5-27-learning-from-incidents-pass.json
       params:
-              schema: TODO  # e.g. ropa-v1, dpia-v1, dpa-v1, ism-v1
-              signers:
-                - dpo@acme.com
-              max_age_days: 365
+        kind: incident_learning
 
   policy:
     engine: rego
-    package: concord.iso27001.iso27001_a_5_27_learning_from_incidents
+    package: concord.iso27001.a_5_27_learning_from_incidents
     file: ../policies/iso27001-a-5-27-learning-from-incidents.rego
 
   remediation:
     runbook: docs/remediation/iso27001-a-5-27-learning-from-incidents.md
     auto_fix: false
-    estimated_effort: 30m
+    estimated_effort: 2d
 
-  status: draft
-  blocking: false
+  mappings:
+    iso27001:
+      - "A.5.27"
+    nist_800_53:
+      - "IR-4"
+
+  status: stable
+  blocking: true
