@@ -32,7 +32,8 @@ deny contains msg if {
 
 warn contains msg if {
     review_due := time.parse_rfc3339_ns(input.attestation.attested_fields.next_review_due)
-    review_due < (time.now_ns() + 30 * 24 * 3600 * 1000 * 1000 * 1000)
-    review_due >= time.now_ns()
+    now_ns := time.now_ns()
+    review_due < (now_ns + 30 * 24 * 3600 * 1000 * 1000 * 1000)
+    review_due >= now_ns
     msg := sprintf("policy review due within 30 days (%s)", [input.attestation.attested_fields.next_review_due])
 }

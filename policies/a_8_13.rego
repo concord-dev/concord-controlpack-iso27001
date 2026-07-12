@@ -46,7 +46,7 @@ latest_test := test if {
     test := sorted_by_age[0]
 }
 
-has_younger(t, all) if {
-    some other in all
+has_younger(t, items) if {
+    some other in items
     other.age_days < t.age_days
 }
