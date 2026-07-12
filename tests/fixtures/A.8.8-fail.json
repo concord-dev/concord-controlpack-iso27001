@@ -1,7 +1,24 @@
 {
   "fetched_at": "2026-06-06T10:00:00Z",
   "issues": [
-    {"id": "SNYK-RCE", "title": "remote code exec", "severity": "critical", "age_days": 21},
-    {"id": "SNYK-XSS", "title": "stored XSS",       "severity": "high",     "age_days": 60}
-  ]
+    {
+      "id": "SNYK-RCE",
+      "title": "remote code exec",
+      "severity": "critical",
+      "age_days": 21
+    },
+    {
+      "id": "SNYK-XSS",
+      "title": "stored XSS",
+      "severity": "high",
+      "age_days": 60
+    }
+  ],
+  "summary": {
+    "critical": 1,
+    "high": 1,
+    "medium": 0,
+    "low": 0,
+    "total": 2
+  }
 }

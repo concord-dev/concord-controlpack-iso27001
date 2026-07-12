@@ -2,12 +2,28 @@
   "fetched_at": "2026-06-06T10:00:00Z",
   "users": [
     {
-      "email": "alice@acme.com", "status": "ACTIVE", "has_strong_mfa": true,
-      "factors": [{"type": "webauthn", "status": "ACTIVE"}]
+      "email": "alice@acme.com",
+      "status": "ACTIVE",
+      "has_strong_mfa": true,
+      "factors": [
+        {
+          "type": "webauthn",
+          "status": "ACTIVE"
+        }
+      ],
+      "id": "00u00000000"
     },
     {
-      "email": "bob@acme.com", "status": "ACTIVE", "has_strong_mfa": true,
-      "factors": [{"type": "totp", "status": "ACTIVE"}]
+      "email": "bob@acme.com",
+      "status": "ACTIVE",
+      "has_strong_mfa": true,
+      "factors": [
+        {
+          "type": "totp",
+          "status": "ACTIVE"
+        }
+      ],
+      "id": "00u00000001"
     }
   ]
 }
