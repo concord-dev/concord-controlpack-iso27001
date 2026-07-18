@@ -2,37 +2,30 @@ package concord.iso27001.a_8_21_security_of_network_services
 
 import rego.v1
 
-# ISO/IEC 27001:2022 A.8.21 — Network services are identified, monitored, and protected
-# Structured attestation (source: attestation / policy_attestation).
+# ISO/IEC 27001:2022 A.8.21 — Security of network services. Security mechanisms,
+# service levels and management requirements of network services must be
+# identified, implemented and monitored. Concord verifies this technically over
+# the security-group inventory (input.security_groups.groups[]): no group may
+# expose a sensitive administrative or database service port to the entire
+# internet (0.0.0.0/0). Fail-closed: no evidence is a denial.
 
-required_fields := {"service_inventory", "security_mechanisms", "monitoring", "last_reviewed_at", "next_review_due"}
+sensitive_ports := {22, 3389, 3306, 5432, 6379, 9200, 27017}
 
 deny contains msg if {
-	not input.attestation
-	msg := "no network_services_security attestation collected"
+	not input.security_groups
+	msg := "no security-group evidence collected — network service exposure cannot be demonstrated as controlled (ISO 27001 A.8.21)"
 }
 
 deny contains msg if {
-	input.attestation.kind != "network_services_security"
-	msg := sprintf("attestation kind is %q, expected \"network_services_security\"", [input.attestation.kind])
+	some sg in input.security_groups.groups
+	some rule in sg.ingress_rules
+	rule.cidr == "0.0.0.0/0"
+	some port in sensitive_ports
+	port_in_range(port, rule)
+	msg := sprintf("security group %q exposes sensitive service port %d to 0.0.0.0/0 — network service is not protected (ISO 27001 A.8.21)", [sg.id, port])
 }
 
-deny contains msg if {
-	some f in required_fields
-	not input.attestation.attested_fields[f]
-	msg := sprintf("network_services_security attestation missing required field: %s", [f])
-}
-
-deny contains msg if {
-	review_due := time.parse_rfc3339_ns(input.attestation.attested_fields.next_review_due)
-	review_due < time.now_ns()
-	msg := sprintf("network_services_security review is overdue (next_review_due=%s)", [input.attestation.attested_fields.next_review_due])
-}
-
-warn contains msg if {
-	now_ns := time.now_ns()
-	review_due := time.parse_rfc3339_ns(input.attestation.attested_fields.next_review_due)
-	review_due < (now_ns + 30 * 24 * 3600 * 1000 * 1000 * 1000)
-	review_due >= now_ns
-	msg := sprintf("network_services_security review due within 30 days (%s)", [input.attestation.attested_fields.next_review_due])
+port_in_range(port, rule) if {
+	rule.from_port <= port
+	rule.to_port >= port
 }

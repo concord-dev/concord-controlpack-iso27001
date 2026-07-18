@@ -1,9 +1,14 @@
 {
-  "kind": "network_services_security",
-  "attested_fields": {
-    "security_mechanisms": "documented for network_services_security",
-    "monitoring": "documented for network_services_security",
-    "last_reviewed_at": "2026-06-01T00:00:00Z",
-    "next_review_due": "2099-12-31T23:59:59Z"
-  }
+  "fetched_at": "2026-06-20T09:00:00Z",
+  "groups": [
+    {
+      "id": "sg-legacy",
+      "name": "legacy-bastion",
+      "ingress_rules": [
+        { "protocol": "tcp", "from_port": 22, "to_port": 22, "cidr": "0.0.0.0/0" },
+        { "protocol": "tcp", "from_port": 5432, "to_port": 5432, "cidr": "0.0.0.0/0" }
+      ],
+      "egress_rules": []
+    }
+  ]
 }

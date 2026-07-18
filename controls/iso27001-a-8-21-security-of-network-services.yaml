@@ -15,18 +15,23 @@ metadata:
 
 spec:
   description: |
-    ISO/IEC 27001:2022 A.8.21 requires security mechanisms, service levels, and requirements of network services to be identified, implemented, and monitored. Concord verifies a cosigned attestation of the network-service inventory, the security mechanisms, and monitoring.
+    ISO/IEC 27001:2022 A.8.21 requires security mechanisms, service levels, and
+    requirements of network services to be identified, implemented, and
+    monitored. Concord verifies this technically over the security-group
+    inventory: no group may expose a sensitive administrative or database
+    service port (SSH, RDP, MySQL, Postgres, Redis, Elasticsearch, Mongo) to the
+    entire internet (0.0.0.0/0). Fail-closed: no evidence is a denial.
 
   rationale: |
-    Unmonitored network services are blind spots where compromise spreads laterally undetected.
+    An unrestricted network service is the most common initial-access vector.
+    Reading the live security-group rules proves exposure is actually
+    controlled, not merely documented.
 
   evidence:
-    - id: attestation
-      source: attestation
-      type: policy_attestation
+    - id: security_groups
+      source: aws
+      type: security_groups
       fixture: ../tests/fixtures/iso27001-a-8-21-security-of-network-services-pass.json
-      params:
-        kind: network_services_security
 
   policy:
     engine: rego
