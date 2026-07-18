@@ -1,9 +1,7 @@
 {
-  "kind": "endpoint_management",
-  "attested_fields": {
-    "mdm_enforcement": "documented for endpoint_management",
-    "encryption_requirement": "documented for endpoint_management",
-    "last_reviewed_at": "2026-06-01T00:00:00Z",
-    "next_review_due": "2099-12-31T23:59:59Z"
-  }
+  "fetched_at": "2026-06-18T08:00:00Z",
+  "devices": [
+    { "id": "MBP-ENG-014", "os": "macOS 14.5", "disk_encryption": true, "mdm_enrolled": true, "accesses_ephi": true },
+    { "id": "BYOD-LAPTOP-3", "os": "Windows 10", "disk_encryption": false, "mdm_enrolled": false, "accesses_ephi": true }
+  ]
 }

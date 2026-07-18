@@ -15,18 +15,23 @@ metadata:
 
 spec:
   description: |
-    ISO/IEC 27001:2022 A.8.1 requires information on user endpoint devices to be protected. Concord verifies a cosigned attestation of the device inventory, MDM enforcement, and the endpoint disk-encryption requirement.
+    ISO/IEC 27001:2022 A.8.1 requires information on user endpoint devices to be
+    protected. Concord verifies this technically by reading the managed-device
+    inventory from the identity/MDM provider and confirming every endpoint is
+    MDM-enrolled and full-disk encrypted. Fail-closed: an endpoint missing either
+    control is flagged individually.
 
   rationale: |
-    Unmanaged, unencrypted endpoints are a leading cause of ePHI/PII loss; MDM and encryption are the baseline endpoint controls.
+    Unmanaged, unencrypted endpoints are a leading cause of PII/data loss; MDM
+    enrollment and full-disk encryption are the baseline endpoint controls. A
+    self-attestation cannot show the current device fleet actually meets them —
+    the live inventory can.
 
   evidence:
-    - id: attestation
-      source: attestation
-      type: policy_attestation
+    - id: managed_devices
+      source: okta
+      type: device_inventory
       fixture: ../tests/fixtures/iso27001-a-8-1-user-endpoint-devices-pass.json
-      params:
-        kind: endpoint_management
 
   policy:
     engine: rego
