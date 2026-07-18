@@ -1,9 +1,39 @@
 {
-  "kind": "access_restriction",
-  "attested_fields": {
-    "restriction_mechanisms": "documented for access_restriction",
-    "review_process": "documented for access_restriction",
-    "last_reviewed_at": "2026-06-01T00:00:00Z",
-    "next_review_due": "2099-12-31T23:59:59Z"
-  }
+  "fetched_at": "2026-06-20T12:00:00Z",
+  "identities": [
+    {
+      "name": "developer-jsmith",
+      "type": "user",
+      "attached_policies": [
+        {
+          "policy_name": "AdministratorAccess",
+          "arn": "arn:aws:iam::aws:policy/AdministratorAccess",
+          "is_aws_managed": true,
+          "document": {
+            "Version": "2012-10-17",
+            "Statement": [
+              { "Effect": "Allow", "Action": "*", "Resource": "*" }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "legacy-batch",
+      "type": "role",
+      "attached_policies": [
+        {
+          "policy_name": "LegacyFullAccess",
+          "arn": "arn:aws:iam::123456789012:policy/LegacyFullAccess",
+          "is_aws_managed": false,
+          "document": {
+            "Version": "2012-10-17",
+            "Statement": [
+              { "Effect": "Allow", "Action": ["*"], "Resource": ["*"] }
+            ]
+          }
+        }
+      ]
+    }
+  ]
 }

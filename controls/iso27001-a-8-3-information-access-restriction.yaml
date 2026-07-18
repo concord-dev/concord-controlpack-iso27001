@@ -15,18 +15,23 @@ metadata:
 
 spec:
   description: |
-    ISO/IEC 27001:2022 A.8.3 requires access to information and other associated assets to be restricted per the access control policy. Concord verifies a cosigned attestation of the access control policy, the enforcing mechanisms, and the access-review process.
+    ISO/IEC 27001:2022 A.8.3 requires access to information and other associated
+    assets to be restricted per the access control policy. Concord verifies this
+    technically over the IAM policy inventory: no identity may hold a standing
+    full-admin grant (the AWS-managed AdministratorAccess policy, or an Allow of
+    Action "*" on Resource "*"), which is broader than any need-to-know access
+    control policy permits. Fail-closed: no evidence is a denial.
 
   rationale: |
-    Least-privilege access restriction is the core preventive control against both external compromise and insider misuse.
+    Least-privilege access restriction is the core preventive control against
+    both external compromise and insider misuse. Reading the live IAM policy set
+    proves the restriction is actually enforced, not merely documented.
 
   evidence:
-    - id: attestation
-      source: attestation
-      type: policy_attestation
+    - id: iam_policies
+      source: aws
+      type: iam_policies
       fixture: ../tests/fixtures/iso27001-a-8-3-information-access-restriction-pass.json
-      params:
-        kind: access_restriction
 
   policy:
     engine: rego
