@@ -2,37 +2,35 @@ package concord.iso27001.a_8_9_configuration_management
 
 import rego.v1
 
-# ISO/IEC 27001:2022 A.8.9 — Configuration baselines exist and drift is detected
-# Structured attestation (source: attestation / policy_attestation).
-
-required_fields := {"baseline_definition", "drift_detection", "enforcement", "last_reviewed_at", "next_review_due"}
+# ISO/IEC 27001:2022 A.8.9 — Configuration management. Configurations, including
+# security configurations, of hardware, software, services and networks must be
+# established, documented, implemented, monitored and reviewed. In AWS this is
+# demonstrated by the Config recorder being enabled and recording in every
+# active region, so the configuration of all resources is continuously captured
+# and drift is detectable. Evidence: AWS Config recorder status
+# (input.config_recorders). Fail-closed: absent evidence, no active regions, or
+# a non-recording region denies. Adapted from the FedRAMP CM-2 / PCI 2.2.1
+# baseline-configuration pattern.
 
 deny contains msg if {
-	not input.attestation
-	msg := "no configuration_management attestation collected"
+	not input.config_recorders
+	msg := "no AWS Config recorder evidence collected — configuration management cannot be demonstrated (ISO 27001 A.8.9)"
 }
 
 deny contains msg if {
-	input.attestation.kind != "configuration_management"
-	msg := sprintf("attestation kind is %q, expected \"configuration_management\"", [input.attestation.kind])
+	input.config_recorders
+	count(object.get(input.config_recorders, "active_regions", [])) == 0
+	msg := "no active regions reported — configuration recording cannot be demonstrated (ISO 27001 A.8.9)"
 }
 
 deny contains msg if {
-	some f in required_fields
-	not input.attestation.attested_fields[f]
-	msg := sprintf("configuration_management attestation missing required field: %s", [f])
+	some region in input.config_recorders.active_regions
+	not has_recording_in_region(region)
+	msg := sprintf("AWS Config recorder is not recording in active region %q — resource configuration is not captured there (ISO 27001 A.8.9)", [region])
 }
 
-deny contains msg if {
-	review_due := time.parse_rfc3339_ns(input.attestation.attested_fields.next_review_due)
-	review_due < time.now_ns()
-	msg := sprintf("configuration_management review is overdue (next_review_due=%s)", [input.attestation.attested_fields.next_review_due])
-}
-
-warn contains msg if {
-	now_ns := time.now_ns()
-	review_due := time.parse_rfc3339_ns(input.attestation.attested_fields.next_review_due)
-	review_due < (now_ns + 30 * 24 * 3600 * 1000 * 1000 * 1000)
-	review_due >= now_ns
-	msg := sprintf("configuration_management review due within 30 days (%s)", [input.attestation.attested_fields.next_review_due])
+has_recording_in_region(region) if {
+	some recorder in input.config_recorders.recorders
+	recorder.region == region
+	recorder.recording == true
 }

@@ -1,10 +1,8 @@
 {
-  "kind": "configuration_management",
-  "attested_fields": {
-    "baseline_definition": "documented for configuration_management",
-    "drift_detection": "documented for configuration_management",
-    "enforcement": "documented for configuration_management",
-    "last_reviewed_at": "2026-06-01T00:00:00Z",
-    "next_review_due": "2099-12-31T23:59:59Z"
-  }
+  "fetched_at": "2026-06-18T08:30:00Z",
+  "active_regions": ["us-east-1", "eu-west-1"],
+  "recorders": [
+    { "name": "default", "region": "us-east-1", "recording": true, "all_supported": true },
+    { "name": "default", "region": "eu-west-1", "recording": true, "all_supported": true }
+  ]
 }
