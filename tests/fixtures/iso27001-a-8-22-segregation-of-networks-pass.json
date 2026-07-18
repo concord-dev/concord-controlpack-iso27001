@@ -1,10 +1,27 @@
 {
-  "kind": "network_segregation",
-  "attested_fields": {
-    "segmentation_design": "documented for network_segregation",
-    "trust_zones": "documented for network_segregation",
-    "enforcement": "documented for network_segregation",
-    "last_reviewed_at": "2026-06-01T00:00:00Z",
-    "next_review_due": "2099-12-31T23:59:59Z"
-  }
+  "fetched_at": "2026-06-18T08:30:00Z",
+  "acls": [
+    {
+      "id": "acl-prod",
+      "vpc_id": "vpc-core",
+      "is_default": false,
+      "entries": [
+        { "rule_number": 100, "egress": false, "protocol": "tcp", "from_port": 443, "to_port": 443, "cidr": "10.20.0.0/16", "action": "allow" },
+        { "rule_number": 200, "egress": false, "protocol": "-1", "cidr": "0.0.0.0/0", "action": "deny" },
+        { "rule_number": 100, "egress": true, "protocol": "tcp", "from_port": 443, "to_port": 443, "cidr": "10.20.0.0/16", "action": "allow" },
+        { "rule_number": 200, "egress": true, "protocol": "-1", "cidr": "0.0.0.0/0", "action": "deny" }
+      ]
+    },
+    {
+      "id": "acl-app",
+      "vpc_id": "vpc-core",
+      "is_default": false,
+      "entries": [
+        { "rule_number": 100, "egress": false, "protocol": "tcp", "from_port": 8443, "to_port": 8443, "cidr": "10.10.0.0/16", "action": "allow" },
+        { "rule_number": 32767, "egress": false, "protocol": "all", "cidr": "0.0.0.0/0", "action": "deny" },
+        { "rule_number": 100, "egress": true, "protocol": "-1", "cidr": "10.0.0.0/8", "action": "allow" },
+        { "rule_number": 32767, "egress": true, "protocol": "all", "cidr": "0.0.0.0/0", "action": "deny" }
+      ]
+    }
+  ]
 }

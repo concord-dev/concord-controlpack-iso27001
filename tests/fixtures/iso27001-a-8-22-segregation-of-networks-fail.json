@@ -1,9 +1,14 @@
 {
-  "kind": "network_segregation",
-  "attested_fields": {
-    "trust_zones": "documented for network_segregation",
-    "enforcement": "documented for network_segregation",
-    "last_reviewed_at": "2026-06-01T00:00:00Z",
-    "next_review_due": "2099-12-31T23:59:59Z"
-  }
+  "fetched_at": "2026-06-18T08:30:00Z",
+  "acls": [
+    {
+      "id": "acl-legacy",
+      "vpc_id": "vpc-legacy",
+      "is_default": true,
+      "entries": [
+        { "rule_number": 100, "egress": false, "protocol": "-1", "cidr": "0.0.0.0/0", "action": "allow" },
+        { "rule_number": 100, "egress": true, "protocol": "-1", "cidr": "0.0.0.0/0", "action": "allow" }
+      ]
+    }
+  ]
 }

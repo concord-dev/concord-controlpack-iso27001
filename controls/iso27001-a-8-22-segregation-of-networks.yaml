@@ -15,18 +15,23 @@ metadata:
 
 spec:
   description: |
-    ISO/IEC 27001:2022 A.8.22 requires groups of information services, users, and systems to be segregated in the organization's networks. Concord verifies a cosigned attestation of the segmentation design, the trust zones, and how segregation is enforced.
+    ISO/IEC 27001:2022 A.8.22 requires groups of information services, users, and
+    systems to be segregated in the organization's networks. Concord verifies
+    this technically over the network-ACL inventory: each ACL must carry an
+    explicit deny-all catch-all on both directions, so traffic not expressly
+    permitted is dropped and segments are isolated by default. Fail-closed: no
+    evidence, no ACLs, or a missing deny-all denies.
 
   rationale: |
-    Flat networks let one compromised host reach everything; segmentation contains lateral movement.
+    Flat networks let one compromised host reach everything; segmentation
+    contains lateral movement. Reading the live network ACLs proves the segment
+    boundaries actually fail closed, not merely that a design document exists.
 
   evidence:
-    - id: attestation
-      source: attestation
-      type: policy_attestation
+    - id: network_acls
+      source: aws
+      type: network_acls
       fixture: ../tests/fixtures/iso27001-a-8-22-segregation-of-networks-pass.json
-      params:
-        kind: network_segregation
 
   policy:
     engine: rego
